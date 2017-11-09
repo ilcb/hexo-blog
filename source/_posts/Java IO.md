@@ -3,7 +3,7 @@ layout: _post
 title: Java IO
 date: 2017-08-01 
 tags: Java
-categories: java 基础
+categories: java
 ---
 ## Java IO相关的类和接口
 
