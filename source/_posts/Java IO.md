@@ -22,7 +22,7 @@ categories: java
 
 ## IO原理
 ### File：
-java.io.File是文件和目录路径名的抽象表示形式，File 能新建、删除、重命名文件和目录，但 File 不能访问文件内容本身。如果需要访问文件内容本身，则需要使用输入/输出流。
+java.io.File是文件和目录路径名的抽象表示形式，File能新建、删除、重命名文件和目录，但File不能访问文件内容本身。如果需要访问文件内容本身，则需要使用输入/输出流。
 File对象可以作为参数传递给流的构造函数
 File的静态属性String separator存储了当前系统的路径分隔符，在UNIX中，此字段为'/'，在Windows中，为'\\'；
 File方法：
@@ -55,12 +55,12 @@ File方法：
 | Reader | Writer |
 
 - 字节流和字符流的区别： 
-  - 读写单位不同：字节流以byte（8bit）为单位，字符流以char（16bit）为单位，根据码表映射字符，一次可能读多个字节。
+  - 读写单位不同：字节流以byte（8bit）为单位，字符流以char（16bit为单位，根据码表映射字符，一次可能读多个字节。
   - 处理对象不同：字节流能处理所有类型的数据（如图片、avi等），而字符流只能处理字符类型的数据。
 
-  ​ 结论：只要是处理纯文本数据，就优先考虑使用字符流。 除此之外都使用字节流。
+  ​结论：只要是处理纯文本数据，就优先考虑使用字符流。 除此之外都使用字节流。
 - 根据数据流向不同分为：输入流和输出流
-   对输入流只能进行读操作，对输出流只能进行写操作，程序中需要根据待传输数据的不同特性而使用不同的流
+  对输入流只能进行读操作，对输出流只能进行写操作，程序中需要根据待传输数据的不同特性而使用不同的流
 
 #### IO流体系:
 
@@ -108,7 +108,7 @@ File方法：
 2）创建一个临时存放数据的数组。
 3）调用流对象的读取方法将流中的数据读入到数组中。
 
-```
+```java
 import java.io.File;
 import java.io.FileInputStream;
 
@@ -143,9 +143,9 @@ public class FileInput {
   - BufferedInputStream 和 BufferedOutputStream
   - BufferedReader 和 BufferedWriter
       缓冲流要"套接"在相应的节点流之上，对读写的数据提供了缓冲的功能，提高了读写的效率，同时增加了一些新的方法
-       对于输出的缓冲流，写出的数据会先在内存中缓存，使用flush()将会使内存中的数据立刻写出
+      对于输出的缓冲流，写出的数据会先在内存中缓存，使用flush()将会使内存中的数据立刻写出
 
-```
+```java
 import java.io.*;
 
 public class BufferTest {
@@ -205,7 +205,7 @@ public class BufferTest {
  编码：字符串->字节数组
  解码：字节数->字符串
 
-```
+```java
 import java.io.*;
 
 public class StreamReader {
@@ -246,7 +246,7 @@ public class StreamReader {
 
         public static void **setOut**([PrintStream](http://blog.csdn.net/baixl123/article/details/41990807) out)
 
-```
+```java
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -279,12 +279,12 @@ public class SystemInOut {
 
 #### 打印流
  在整个IO包中，打印流是输出信息最方便的类。
-  PrintStream(字节打印流)和PrintWriter(字符打印流)提供了一系列重载的print和println方法，用于多种数据类型的输出
+ PrintStream(字节打印流)和PrintWriter(字符打印流)提供了一系列重载的print和println方法，用于多种数据类型的输出
  PrintStream和PrintWriter的输出不会抛出异常
  PrintStream和PrintWriter有自动flush功能
  System.out返回的是PrintStream的实例
 
-```
+```java
 import java.io.*;
 
 public class Print {
@@ -316,10 +316,10 @@ public class Print {
  #### 数据流
   操作Java语言的基本数据类型的数据，可以使用数据流。
   数据流有两个类：(用于读取和写出基本数据类型的数据）
-    DataInputStream 和 DataOutputStream
+  DataInputStream 和 DataOutputStream
   分别"套接"在 InputStream 和 OutputStream 节点流上
 
-```
+```java
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -376,7 +376,7 @@ ObjectOutputStream和ObjectInputStream不能序列化static和transient修饰的
   调用 readObject() 方法读取流中的对象
   **强调：如果某个类的字段不是基本数据类型或 String 类型，而是另一个引用类型，那么这个引用类型必须是可序列化的，否则拥有该类型的 Field 的类也不能序列化**
 
-```
+```java
 import java.io.Serializable;
 
 public class User implements Serializable {
@@ -410,7 +410,7 @@ public class User implements Serializable {
 ```
 
 
-```
+```java
 import java.io.*;
 
 public class ObjectReadWrite {
@@ -451,7 +451,7 @@ RandomAccessFile 对象包含一个记录指针，用以标示当前读写处的
   rwd:打开以便读取和写入，同步文件内容的更新
   rws:打开以便读取和写入，同步文件内容和元数据的更新
 
-```
+```java
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
