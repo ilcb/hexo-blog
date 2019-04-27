@@ -1,9 +1,9 @@
 ---
-layout:_post
-title:git使用
-date:2017-07-3011:33:12
-type:"tags"
-categories:"工具"
+layout: _post
+title: "git使用"
+date: 2017-07-3110：26
+tags: "git"
+categories: "工具"
 ---
 
 ## Git简介

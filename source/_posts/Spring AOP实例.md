@@ -3,7 +3,7 @@ layout: _post
 title: "Spring AOP示例"
 date: 2017-07-26 17:33:12
 tags: "Spring"
-categories: "技术""
+categories: "技术"
 ---
 
 ## pom.xml配置

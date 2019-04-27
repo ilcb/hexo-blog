@@ -1,9 +1,9 @@
 ---
 layout: _post
-title: "Java线程池""
+title: "Java线程池"
 date: 2017-08-02
 tags: "Java"
-categories: "技术""
+categories: "技术"
 ---
 
 #线程池的作用

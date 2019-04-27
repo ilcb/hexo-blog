@@ -1,9 +1,9 @@
 ---
 layout: _post
-title: "Spring-SpringMVC-Mybatis整合""
+title: "Spring-SpringMVC-Mybatis整合"
 date: 2017-08-01 
 tags: "Spring"
-categories: "技术""
+categories: "技术"
 ---
 
 # 基本概念
