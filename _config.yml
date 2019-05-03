@@ -123,3 +123,7 @@ feed:
   content_limit_delim: ' '
   order_by: -date
 
+# 中文链接转拼音
+permalink_pinyin:
+  enable: true
+  separator: '-' # default: '-'
