@@ -7,7 +7,7 @@ categories: "Java"
 ---
 
 ###  Java异常体系
-![exception](/images/exception/exception.jpg)
+![exception](exception.jpg)
 Exception和Error都继承于共同的父类Throwable；
 
 **Error**表示运行故障发生于虚拟机自身、或者发生在虚拟机试图执行应用时，与代码编写者执行的操作无关，例如，Java虚拟机运行错误(Virtual MachineError)，当 JVM 不再有继续执行操作所需的内存资源时，将出现 OutOfMemoryError，这些错误是不可查的，因为它们在应用程序的控制和处理能力之外，而且绝大多数是程序运行时不允许出现的状况。对于设计合理的应用程序来说，即使确实发生了错误，本质上也不应该试图去处理它所引起的异常状况。在 Java中，错误通过Error的子类描述，发生这些情况时Java虚拟机(JVM)一般会选择线程终止。

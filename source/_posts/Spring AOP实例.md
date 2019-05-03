@@ -153,15 +153,15 @@ public class App {
 ```
 启动服务，验证下服务是否有效:
 首先在 Advanced rest client中,调用 **/aop/http/alive** 接口，请求头中不加任何参数：
-![1](\images\aop\1.png)
+![1](1.png)
 请求 /aop/http/user_info 接口：
 
-![2](\images\aop\2.png)
+![2](2.png)
 请求 **/aop/http/user_info** 接口时，服务返回一个权限异常的错误，为什么会这样呢？
 自然就是我们的权限认证系统起了作用：当一个方法被调用并且这个方法有`AuthChecker` 注解时，那么首先会执行到我们的`around advice`，在这个advice中会校验HTTP请求的cookie字段中是否有携带`user_token`字段， 
 如果没有，则返回权限错误。
 那么为了能够正常地调用 **/aop/http/user_info** 接口，我们可以在Cookie中添加**user_token=123456**；
-![3](\images\aop\3.png)
+![3](3.png)
 
 ## 方法调用日志
 需求：

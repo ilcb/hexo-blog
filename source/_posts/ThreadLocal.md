@@ -148,7 +148,7 @@ private static ThreadLocal<Index> local = new ThreadLocal<Index>(){
 };
 ```
 
-![2](/images/threadlocal/2.png)
+![2](2.png)
 
 # ThreadLocal源码
 ThreadLocal有一个内部类ThreadLocalMap，这个ThreadLocalMap的作用非常关键，它就是线程真正保存线程自己本地变量的容器。

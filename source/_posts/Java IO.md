@@ -18,7 +18,7 @@ categories: java
 
 ## Java流类图结构
 
-![structure](/images/io/structure.jpg)
+![structure](structure.jpg)
 
 ## IO原理
 ### File：

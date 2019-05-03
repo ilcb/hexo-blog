@@ -23,7 +23,7 @@ MyBatis是一个基于Java的持久层框架，提供的持久层框架包括SQL
 3. spring-mvc.xml：SpringMVC配置
 
 ## 工程目录：
-![structure](/images/ssm/structure.png)
+![structure](structure.png)
 
 ## pom.xml
 ```xml
@@ -322,7 +322,7 @@ CREATE TABLE `user` (
 ```
 
 如果是IntelliJ IDEA，在右侧工具栏中找到maven，在maven中依次打开Plugins->mybatis-generator，点击mybatis-generator:generate进行代码及配置生成：
-![generate](/images/ssm/generate.png)
+![generate](generate.png)
 
 生成完成后在target->generated-sources->mybatis-generator目录下将生成的文件拷贝到项目对应包下：
 1.User.java
@@ -576,7 +576,7 @@ public class UserTest {
 ```
 
 2.运行测试用例，整合成功：
-![success](/images/ssm/success.png)
+![success](success.png)
 **至此Spring和Mybatis整合成功**
 
 # 整合SpringMVC
@@ -699,5 +699,5 @@ public class UserController {
 ```
 
 ## 部署并访问项目
-![success1](/images/ssm/success1.png)
+![success1](success1.png)
 **至此，Spring、SpringMVC、Mybatis整合全部完成**

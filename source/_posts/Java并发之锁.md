@@ -874,6 +874,6 @@ class MyLock {
 
 结果：
 
-![1](/images/lock/1.png)
+![1](1.png)
 
 A，B对象锁定了ObjectB，A和B都不能同时获得ObjectA和ObjectB，都在等待对方释放锁资源，造成了死锁
