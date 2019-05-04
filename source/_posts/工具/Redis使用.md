@@ -1,85 +1,70 @@
 ---
 layout: _post
-title: Redis使用
+title: Redis 使用
 date: 2017-07-26 17:33:12
-tags: Redis
-categories: '技术'
+tags: 
+  - Redis
+  - 分布式缓存
+categories: 
+  - 缓存
+  - 工具
 ---
-
-## Redis key命令
-
+## Redis key 命令
 + del key
-  存在key时删除key
-
+  存在 key 时删除 key
 + dump key
   序列化给定 key ，并返回被序列化的值
-
 + exists key 
-  检查key是否存在
-
+  检查 key 是否存在
 + expire key seconds 
-  设置key的过期时间，以秒为单位
-
+  设置 key 的过期时间，以秒为单位
 + expireat key timestamp 
-  设置key在指定时间戳之后过期
-
+  设置 key 在指定时间戳之后过期
 + expireat key millseconds 
-  设置key的过期时间，以毫秒为单位
-
+  设置 key 的过期时间，以毫秒为单位
 + pexoureat key milliseconds-timestamp 
   设置 key 过期时间的时间戳(unix timestamp) 以毫秒计
-
 + keys pattern 
-  查找与指定模式匹配的所有key
-
+  查找与指定模式匹配的所有 key
 + move key db 
   将当前数据库的 key 移动到给定的数据库 db 当中
-
 + persist key 
-  删除key的过期时间
-
+  删除 key 的过期时间
 + ttl key 
-  获取key的剩余到期时间,以秒为单位
-
+  获取 key 的剩余到期时间,以秒为单位
 + randomkey 
-  从redis返回一个随机的key
-
+  从 redis 返回一个随机的 key
 + rename key newkey 
-  更改key名称
-
+  更改 key 名称
 + pttl key 
-  获取key的剩余到期时间，以毫秒为单位
-
+  获取 key 的剩余到期时间，以毫秒为单位
 + renamenx key newkey 
   仅当 newkey 不存在时，将 key 改名为 newkey
-
 + type key
-  返回key所存储的值的类型
-
+  返回 key 所存储的值的类型
 ## Redis 字符串（string）
 + set key value 
-  设置key的值
+  设置 key 的值
   ```bash
   127.0.0.1:6379> set key 'value'
   ​OK
   ```
 + get key
-  获取指定key的值
+  获取指定 key 的值
   ```bash
   127.0.0.1:6379> get key
   ​"value"
   ```
 + getset key value
-  将给定key的值设为value,返回key的旧值（old value）
+  将给定 key 的值设为 value,返回 key 的旧值（old value）
   ```bash
   ​127.0.0.1:6379> getset key 'new-value'
   ​"value"
   ​127.0.0.1:6379> get key
   ​"new-value"
   ```
-
 + setex key seconds value
-  将value关联到key,并将key的过期时间设置位seconds秒
+  将 value 关联到 key,并将 key 的过期时间设置位 seconds 秒
   ```bash
   ​127.0.0.1:6379> setex mykey 60 redis
   ​OK
@@ -88,9 +73,8 @@ categories: '技术'
   ​127.0.0.1:6379> get mykey
   ​"redis"
   ```
-
 + setnx key value
-  只有在key不存在时设置key的值
+  只有在 key 不存在时设置 key 的值
   ```bash
   ​127.0.0.1:6379> exists job
   ​(integer) 0
@@ -101,9 +85,8 @@ categories: '技术'
   ​127.0.0.1:6379> get job
   ​"programmer"
   ```
-
 + setrange key offset value
-  用value重置key存储的字符串值，从偏移量offset开始
+  用 value 重置 key 存储的字符串值，从偏移量 offset 开始
   ```bash
   ​127.0.0.1:6379> set key1 'hello world'
   ​OK
@@ -112,22 +95,18 @@ categories: '技术'
   ​127.0.0.1:6379> get key1
   ​"hello redis"
   ```
-
 + getrange key start end
-  返回key中字符串的子串
+  返回 key 中字符串的子串
   ```bash
   ​127.0.0.1:6379> get key
   ​"value"
   ```
-
 + setbit key offset value
-  对key存储的字符串值，设定或清除指定偏移量上的位
-
+  对 key 存储的字符串值，设定或清除指定偏移量上的位
 + getbit key offset
-  对key存储的字符串值，获取指定偏移量上的位（bit）
-
+  对 key 存储的字符串值，获取指定偏移量上的位（bit）
 + mset key value key1 value1 ...
-  设置一个或多个key-value对
+  设置一个或多个 key-value 对
   ```bash
   ​127.0.0.1:6379> mset key1 'hello' key2 'world'
   ​OK
@@ -139,9 +118,8 @@ categories: '技术'
   ​1) "hello"
   ​2) "world"
   ```
-
 + mget key1 key2 ...
-  获取一个或多个给定key的值
+  获取一个或多个给定 key 的值
   ```bash
   ​127.0.0.1:6379> set key1 'value1'
   ​OK
@@ -151,9 +129,8 @@ categories: '技术'
   ​1) "value1"
   ​2) "value2"
   ```
-
 + msetnx key value key1 value1 ...
-  仅当所有给定的key都不存在时设置一个或多个key-value对
+  仅当所有给定的 key 都不存在时设置一个或多个 key-value 对
   ```bash
   ​127.0.0.1:6379> msetnx rmdbs 'mysql' nosql 'mongodb' key-value-store 'redis'
   ​(integer) 1
@@ -164,9 +141,8 @@ categories: '技术'
   ​127.0.0.1:6379> msetnx rmdbs 'sqlite' language 'java'
   ​(integer) 0
   ```
-
 + strlen key
-  返回key存储值的长度
+  返回 key 存储值的长度
   ```bash
   ​127.0.0.1:6379> set mykey 'hello world'
   ​OK
@@ -174,7 +150,7 @@ categories: '技术'
   ​(integer) 11
   ```
 + psetex key milliseconds value
-  以毫秒为单位设置key的生存时间
+  以毫秒为单位设置 key 的生存时间
   ```bash
   ​127.0.0.1:6379> psetex mykey 20000 'hell0'
   ​OK
@@ -184,7 +160,7 @@ categories: '技术'
   ​"hell0"
   ```
 + incr key
-  将key中存储的数字+1
+  将 key 中存储的数字+1
   ```bash
   ​127.0.0.1:6379> set page 10
   ​OK
@@ -194,7 +170,7 @@ categories: '技术'
   ​"11"
   ```
 + incrby key increment
-  将key存储的值加上给定的增量值(increment)
+  将 key 存储的值加上给定的增量值(increment)
   ```bash
   ​127.0.0.1:6379> set page 10
   ​OK
@@ -202,7 +178,7 @@ categories: '技术'
   ​(integer) 15
   ```
 + incrbyfloat key increment
-  将key存储的值奖赏指定的浮点增量值(increment)
+  将 key 存储的值奖赏指定的浮点增量值(increment)
   ```bash
   ​127.0.0.1:6379> set mykey 10.5
   ​OK
@@ -210,7 +186,7 @@ categories: '技术'
   ​"10.9"
   ```
 + decr key
-  将key中存储的数字-1
+  将 key 中存储的数字-1
   ```bash
   ​127.0.0.1:6379> set fail_times 10
   ​OK
@@ -218,7 +194,7 @@ categories: '技术'
   ​(integer) 9
   ```
 + decrby key decrement
-  将key中存储的数字减去指定的减量值(decrement)
+  将 key 中存储的数字减去指定的减量值(decrement)
   ```bash
   ​127.0.0.1:6379> set count 10
   ​OK
@@ -226,7 +202,7 @@ categories: '技术'
   ​(integer) 5
   ```
 + append key value
-  如果key已经存在且是一个字符串，将value值追加到key中存储值的末尾
+  如果 key 已经存在且是一个字符串，将 value 值追加到 key 中存储值的末尾
   ```bash
   ​127.0.0.1:6379> exists phone
   ​(integer) 0
@@ -237,30 +213,27 @@ categories: '技术'
   ​127.0.0.1:6379> get phone
   ​"nokia5300"
   ```
-
 ## Redis 哈希 (hash)
 + hset key field value
-  将哈希表key中的字段field的值设为value
+  将哈希表 key 中的字段 field 的值设为 value
   ```bash
   ​127.0.0.1:6379> hset myhash field1 'aaa'
   ​(integer) 1
   ```
-
 + hsetnx key field value
-  只有在字段field不存在时，设置哈希表字段的值
+  只有在字段 field 不存在时，设置哈希表字段的值
   ```bash
   ​127.0.0.1:6379> hsetnx myhash field1 'aaa'
   ​(integer) 0
   ```
-
 + hget key field
-  获取哈希表中指定key的指定字段和值
+  获取哈希表中指定 key 的指定字段和值
   ```bash
   ​127.0.0.1:6379> hget myhash field1
   ​"aaa"
   ```
 + hgetall key
-  获取哈希表中指定key的所有字段和值
+  获取哈希表中指定 key 的所有字段和值
   ```bash
   ​127.0.0.1:6379> hset myhash field2 'bbb'
   ​(integer) 1
@@ -271,7 +244,7 @@ categories: '技术'
   ​4) "bbb"
   ```
 + hmset key field1 value1 field2 value2 ...
-  同时将多个field-value对设置到哈希表中
+  同时将多个 field-value 对设置到哈希表中
   ```bash
   ​127.0.0.1:6379> hmset myhash field3 'ccc' field4 'ddd'
   ​OK
@@ -294,7 +267,7 @@ categories: '技术'
   ​4) "bbb"
   ```
 + hexists key field
-  查看哈希表key中，指定的field是否存在
+  查看哈希表 key 中，指定的 field 是否存在
   ```bash
   ​127.0.0.1:6379> hexists myhash field3
   ​(integer) 0
@@ -306,7 +279,7 @@ categories: '技术'
   ​(integer) 0
   ```
 + hincrby key field increment
-  哈希表中key指定的字段的整数值加上增量
+  哈希表中 key 指定的字段的整数值加上增量
   ```bash
   ​increment127.0.0.1:6379> hset myhash field 5
   ​(integer) 1
@@ -316,7 +289,7 @@ categories: '技术'
   ​(integer) 0
   ```
 + hincrbyfloat key field increment
-  哈希表中key指定的字段的浮点值加上增量increment
+  哈希表中 key 指定的字段的浮点值加上增量 increment
   ```bash
   ​127.0.0.1:6379> hset mykey field 10.5
   ​(integer) 1
@@ -339,8 +312,7 @@ categories: '技术'
   ```
 + hscan key cursor[MATCH pattern][COUNT count]
   迭代哈希表中的键值对
-
-## Redis列表 (list)
+## Redis 列表 (list)
 + lpush key value1 value2 ...
   将一个或多个值插入到列表头部
   ```bash
@@ -361,7 +333,7 @@ categories: '技术'
   ​4) "aaa"
   ```
 + lpop key
-  移出并获取列表的第1个元素
+  移出并获取列表的第 1 个元素
   ```bash
   ​127.0.0.1:6379> lpop list1
   ​"111"
@@ -405,7 +377,7 @@ categories: '技术'
   ​4) "111"
   ```
 + blpop key1 key2 ... timeout
-  移除并获取列表的第1个元素，如果没有元素会阻塞列表知道等待超时或者发现可弹出元素为止
+  移除并获取列表的第 1 个元素，如果没有元素会阻塞列表知道等待超时或者发现可弹出元素为止
   如果列表为空，返回一个 nil 。 否则，返回一个含有两个元素的列表，第一个元素是被弹出元素所属的 key ，第二个元素是被弹出元素的值。
   ```bash
   ​127.0.0.1:6379> blpop list1 100
@@ -413,7 +385,7 @@ categories: '技术'
   ​2) "ccc"
   ```
 + brpop key1 key2 ... timeout
-  移除并获取列表的最后1个元素，如果没有元素会阻塞列表知道等待超时或者发现可弹出元素为止
+  移除并获取列表的最后 1 个元素，如果没有元素会阻塞列表知道等待超时或者发现可弹出元素为止
   假如在指定时间内没有任何元素被弹出，则返回一个 nil 和等待时长。 反之，返回一个含有两个元素的列表，第一个元素是被弹出元素所属的 key ，第二个元素是被弹出元素的值。
   ```bash
   ​127.0.0.1:6379> brpop list1 100
@@ -422,7 +394,6 @@ categories: '技术'
   ```
 + brpoplpush source destination timeout
   从列表中弹出一个值，并插入另一个列表中并返回它， 如果列表没有元素会阻塞列表直到等待超时或发现可弹出元素为止
-
 + rpoplpush source destination
   移除列表最后一个元素，并将元素添加到另一个列表并返回
   ```bash
@@ -455,14 +426,12 @@ categories: '技术'
   ```
 + lrange key start end
   获取列表指定范围内的元素
-
 + llen key
   获取列表长度
   ```bash
   ​127.0.0.1:6379> llen list1
   ​(integer) 3
   ```
-
 + lrem key count value
   移除列表元素
   * count > 0 : 从表头开始向表尾搜索，移除与 VALUE 相等的元素，数量为 COUNT 。
@@ -493,7 +462,7 @@ categories: '技术'
   ​(empty list or set)
   ```
 ​
-## Redis集合 (set)
+## Redis 集合 (set)
 + sadd key memeber1 member2
   向集合中添加一个或多个成员
   ```bash
@@ -513,7 +482,7 @@ categories: '技术'
   ​1) "bbb"
   ```
 + sismember key member
-  判断member元素是否是集合key的元素
+  判断 member 元素是否是集合 key 的元素
   ```bash
   ​127.0.0.1:6379> sismember myset 'bbb'
   ​(integer) 1
@@ -533,7 +502,7 @@ categories: '技术'
   ​1) "bbb"
   ```
 + sdiffstore destination key1 key2 ...
-  返回所有给定集合的差集并存储在destination中
+  返回所有给定集合的差集并存储在 destination 中
   ```bash
   ​127.0.0.1:6379> sdiffstore myset2 myset myset1
   ​(integer) 1
@@ -547,8 +516,7 @@ categories: '技术'
   ​(empty list or set)
   ```
 + sinterstore destination key1 key2 ...
-  返回给定所有集合的交集并存储在destination中
-
+  返回给定所有集合的交集并存储在 destination 中
 + sunion key1 key2 ...
   返回所有给定结合的并集
   ```bash
@@ -557,7 +525,7 @@ categories: '技术'
   ​2) "bbb"
   ```
 + sunionstore destination key1 key2 ...
-  所有给定集合的并集存储在destination中
+  所有给定集合的并集存储在 destination 中
   ```bash
   ​127.0.0.1:6379> sunionstore myset3 myset myset1
   ​(integer) 2
@@ -566,7 +534,7 @@ categories: '技术'
   ​2) "bbb"
   ```
 + smove source destination memeber
-  将members元素从source集合移动到destination集合
+  将 members 元素从 source 集合移动到 destination 集合
   ```bash
   ​127.0.0.1:6379> smove myset myset1 'bbb'
   ​(integer) 1
@@ -592,8 +560,7 @@ categories: '技术'
   ```
 + sscan key cursour [MATCH pattern][COUNT count]
   迭代集合中的元素
-
-## Redis有序集合 (sorted set)
+## Redis 有序集合 (sorted set)
   + zadd key score1 member1 score2 member2 ...
   向有序集合添加一个或多个成员
   ```bash
@@ -691,7 +658,7 @@ categories: '技术'
   ​"1"
   ```
 + zincrby key increment member
-  有序集合中对指定成员的分数加上增量increment
+  有序集合中对指定成员的分数加上增量 increment
   ```bash
   ​127.0.0.1:6379> zincrby myset 3 'aaa'
   ​"4"
@@ -718,47 +685,35 @@ categories: '技术'
   (integer) 1
   redis 127.0.0.1:6379> ZADD fin_test 99.5 "Tom"
   (integer) 1
-
   redis 127.0.0.1:6379> ZINTERSTORE sum_point 2 mid_test fin_test
   (integer) 3
   ```
 + zunionstore destination numkeys key1 key2 ...
-  计算给定的一个或多个有序集合的并集，并存储在destination中
-
+  计算给定的一个或多个有序集合的并集，并存储在 destination 中
 + zlexcount key min max
   在有序集合中计算指定字典区间内成员数量
-
 + zrange key start stop [WITHSCOURES]
   通过索引区间返回有序集合指定区间内的成员
-
 + zrangebylex key min max [LIMIT offset count]
   通过字典区间返回有序集合的成员
-
 + zrangebyscore key min max [WITHSCORES][LIMIT]
   通过分数返回有序集合中指定成员的索引
-
 + zrank key member
   返回有序集合中指定成员的索引
-
 + zrevrange key start end [WITHSCORES]
   返回有序集合指定区间内的成员，通过索引，分数从高到低
-
 + zrevrangebyscore key max min [WITHSCORES]
   返回有序集合中指定分数区间内的成员，分数从高到低
-
 + scan key cursor [MATCH pattern][COUNT count]
   迭代有序集合中的元素
-
 ## HyperLogLog
 ​  在 Redis 里面，每个 HyperLogLog 键只需要花费 12 KB 内存，就可以计算接近 2^64 个不同元素的基 数。这和计算基数时，元素越多耗费内存就越多的集合形成鲜明对比。
   ​但是，因为 Hy​Redis HyperLogLog 是用来做基数统计的算法，HyperLogLog 的优点是，在输入元素的数量或者体积非常非常大时，计算基数所需的空间总是固定 的、并且是很小的。
   perLogLog 只会根据输入元素来计算基数，而不会储存输入元素本身，所以 HyperLogLog 不能像集合那样，返回输入的各个元素。
 + pfadd key element1 element2 ...
   添加指定元素到 HyperLogLog 中
-
 + pfcount key1 key2 ...
   返回给定 HyperLogLog 的基数估算值。
-
 + [PFMERGE destkey sourcekey [sourcekey ...\]](http://www.runoob.com/redis/hyperloglog-pfmerge.html) 
    将多个 HyperLogLog 合并为一个 HyperLogLog
   ```bash
@@ -771,17 +726,13 @@ categories: '技术'
   127.0.0.1:6379> pfcount runonbkey
   (integer) 3
   ```
-
 ## Redis 发布订阅(pub/sub)
   ​Redis 发布订阅(pub/sub)是一种消息通信模式：发送者(pub)发送消息，订阅者(sub)接收消息。
   ​Redis 客户端可以订阅任意数量的频道。
-
 ​下图展示了频道 channel1 ， 以及订阅这个频道的三个客户端 —— client2 、 client5 和 client1 之间的关系：
 ​![pubsub1](http://www.runoob.com/wp-content/uploads/2014/11/pubsub1.png)
-
 ​当有新消息通过 PUBLISH 命令发送给频道 channel1 时， 这个消息就会被发送给订阅它的三个客户端：
 ​![pubsub2](http://www.runoob.com/wp-content/uploads/2014/11/pubsub2.png)
-
 ### 示例
 ```bash
 127.0.0.1:6379> subscribe redisChat
@@ -794,7 +745,6 @@ Reading messages... (press Ctrl-C to quit)
 ```bash
 127.0.0.1:6379> publish redisChat 'Redis is a great caching tools'
 (integer) 1
-
 127.0.0.1:6379> publish redisChat 'learn redis'
 (integer) 1
 ```
@@ -803,12 +753,10 @@ Reading messages... (press Ctrl-C to quit)
 1) "message"
 2) "redisChat"
 3) "Redis is a great caching tools"
-
 1) "message"
 2) "redisChat"
 3) "learn redis"
 ```
-
 ### 命令
 + psubscribe pattern1 pattern2 ...
   订阅一个或多个符合给定模式的频道。
@@ -859,34 +807,26 @@ Reading messages... (press Ctrl-C to quit)
   2) "a"
   3) (integer) 0
   ```
-
-## Redis事务
+## Redis 事务
 ​Redis 事务可以一次执行多个命令， 并且带有以下两个重要的保证：
 ​事务是一个单独的隔离操作：事务中的所有命令都会序列化、按顺序地执行。事务在执行的过程中，不会被其他客户端发送来的命令请求所打断。
 ​事务是一个原子操作：事务中的命令要么全部被执行，要么全部都不执行。
-
 ​一个事务从开始到执行会经历以下三个阶段：
 - 开始事务。
 - 命令入队。
 - 执行事务。
-
 ### 示例
 ```bash
 redis 127.0.0.1:6379> MULTI
 OK
-
 redis 127.0.0.1:6379> SET book-name "Mastering C++ in 21 days"
 QUEUED
-
 redis 127.0.0.1:6379> GET book-name
 QUEUED
-
 redis 127.0.0.1:6379> SADD tag "C++" "Programming" "Mastering Series"
 QUEUED
-
 redis 127.0.0.1:6379> SMEMBERS tag
 QUEUED
-
 redis 127.0.0.1:6379> EXEC
 1) OK
 2) "Mastering C++ in 21 days"
@@ -895,23 +835,17 @@ redis 127.0.0.1:6379> EXEC
 2) "C++"
 3) "Programming"
 ```
-
 + multi
   标记一个事务的开始
-
 + discard
   取消事务，放弃执行事务内的所有命令
-
 + exec
   执行所有事务命令
-
 + watch key1 key2
-  监视一个或多个key,如果在事务执行之前key被其它命令改动，则事务被打断
-
+  监视一个或多个 key,如果在事务执行之前 key 被其它命令改动，则事务被打断
 + unwatch
-  取消watch命令对所有key的监视
-
-## Redis连接命令
+  取消 watch 命令对所有 key 的监视
+## Redis 连接命令
 + auth password
   验证密码是否正确
   ```bash
@@ -930,9 +864,7 @@ redis 127.0.0.1:6379> EXEC
   ```
 + ping
   查看服务是否运行
-
 + quit
   关闭当前连接
-
 + select index
   切换到指定的数据库

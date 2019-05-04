@@ -1,9 +1,12 @@
 ---
 layout: _post
-title: "Spring AOP示例"
+title: Spring AOP实例
 date: 2017-07-26 17:33:12
-tags: "Spring"
-categories: "技术"
+tags: 
+    - Spring
+    - AOP
+categories: 
+    - AOP
 ---
 
 ## pom.xml配置
@@ -51,17 +54,19 @@ categories: "技术"
 2.当调用方的权限不符时， 返回错误。
 
 根据上面所提出的需求， 我们可以进行如下设计:
-1.提供一个特殊的注解 `AuthChecker`， 这个是一个方法注解， 有此注解所标注的 Controller 需要进行调用方权限的认证。
-2.利用 Spring AOP， 以 **@annotation** 切点标志符来匹配有注解 `AuthChecker` 所标注的 joinpoint。在 advice 中， 简单地检查调用者请求中的 Cookie 中是否有我们指定的 token， 如果有， 则认为此调用者权限合法， 允许调用， 反之权限不合法， 范围错误。
+1. 提供一个特殊的注解 `AuthChecker`， 这个是一个方法注解， 有此注解所标注的 Controller 需要进行调用方权限的认证。
+2. 利用 Spring AOP， 以 **@annotation** 切点标志符来匹配有注解 `AuthChecker` 所标注的 joinpoint。在 advice 中， 简单地检查调用者请求中的 Cookie 中是否有我们指定的 token， 如果有， 则认为此调用者权限合法， 允许调用， 反之权限不合法， 范围错误。
 
 源码:
-### **AuthChecker.java:**
+
+### AuthChecker.java:
 ```java
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AuthChecker {
 }
 ```
+
 ### HttpAopAdvice.java
 ```java
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -165,20 +170,20 @@ public class App {
 
 ## 方法调用日志
 需求：
-1.某个服务下的方法的调用需要有 log: 记录调用的参数以及返回结果。
-2.当方法调用出异常时， 有特殊处理， 例如打印异常 log， 报警等。
+1. 某个服务下的方法的调用需要有 log: 记录调用的参数以及返回结果。
+2. 当方法调用出异常时， 有特殊处理， 例如打印异常 log， 报警等。
 
 根据上面的需求， 我们可以使用 before advice 来在调用方法前打印调用的参数， 使用 after returning advice  在方法返回打印返回的结果. 而当方法调用失败后， 可以使用 after throwing advice 来做相应的处理。
 
 实现:
 ### LogAopAdvice.java
+
 ```java
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
 
 @Component
 @Aspect
@@ -302,12 +307,13 @@ public class App {
 
 ## 方法耗时统计
 需求:
-1.为服务中的每个方法调用进行调用耗时记录。
-2.将方法调用的时间戳，方法名，调用耗时上报到监控平台
+1. 为服务中的每个方法调用进行调用耗时记录。
+2. 将方法调用的时间戳，方法名，调用耗时上报到监控平台
 可以使用 around advice， 然后在方法调用前， 记录一下开始时间， 然后在方法调用结束后， 记录结束时间， 它们的时间差就是方法的调用耗时。
 
 实现:
 ### ExpireAopAdvice.java
+<!--  -->
 ```java
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

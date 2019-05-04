@@ -1,31 +1,38 @@
 ---
 layout: _post
-title: "Spring-SpringMVC-Mybatis整合"
+title: Spring-SpringMVC-Mybatis整合
 date: 2017-08-01 
-tags: "Spring"
-categories: "技术"
+tags: 
+    - Spring
+    - SpringMVC
+    - MyBatis
+categories: 
+    - Spring
+    - SpringMVC
+    - MyBatis
 ---
 
-# 基本概念
-## Spring
+## 基本概念
+### Spring
 Spring是一个轻量级的控制反转（IoC）和面向切面（AOP）的容器框架。
 
-## SpringMVC
+### SpringMVC
 Spring MVC属于SpringFrameWork的MVC组件。Spring MVC 分离了控制器、模型对象、视图等角色。
 
-## MyBatis
+### MyBatis
 MyBatis是一个基于Java的持久层框架，提供的持久层框架包括SQL Maps和Data Access Objects（DAO），MyBatis 消除了几乎所有的JDBC代码和参数的手工设置以及结果集的检索。MyBatis 使用简单的 XML或注解用于配置和原始映射，将接口和 Java 的POJOs（Plain Old Java Objects，普通的 Java对象）映射成数据库中的记录。
 
-# SSM整合
-## 配置文件：
+## SSM整合
+### 配置文件：
 1. dbconfig.properties：数据源配置信息
 2. spring-mybatis.xml：Spring整合Mybatis配置文件
 3. spring-mvc.xml：SpringMVC配置
 
-## 工程目录：
+### 工程目录：
 ![structure](structure.png)
 
-## pom.xml
+### pom.xml
+
 ```xml
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
@@ -165,8 +172,11 @@ MyBatis是一个基于Java的持久层框架，提供的持久层框架包括SQL
 </project>
 ```
 
-# Spring整合Mybatis
-## 建立dbconfig.properties，进行数据源配置
+## Spring整合Mybatis
+### 数据源配置
+
+新建dbconfig.properties，内容如下：
+
 ```properties
 driverClass=com.mysql.jdbc.Driver
 url=jdbc:mysql://localhost:3306/ssm
@@ -179,7 +189,9 @@ maxIdle=10
 maxWait=50000
 ```
 
-## 建立spring-mybatis.xml，用来完成spring和mybatis的整合，主要的就是自动扫描，自动注入，配置数据库。
+### 整合spring和mybatis
+新建spring-mybatis.xml，用来完成自动扫描，自动注入，配置数据源。
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
@@ -241,7 +253,8 @@ maxWait=50000
 </beans>
 ```
 
-## log4j.properties
+### log4j.properties
+
 ```properties
 #定义LOG输出级别
 log4j.rootLogger=INFO,Console,File  
@@ -264,8 +277,8 @@ log4j.appender.File.layout = org.apache.log4j.PatternLayout
 log4j.appender.File.layout.ConversionPattern =[%p] [%d{yyyy-MM-dd HH\:mm\:ss}][%c]%m%n  
 ```
 
-##  测试
-###  新建表user
+###  测试
+####  新建表user
 ```sql
 CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -275,7 +288,7 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ```
 
-### 用Mybatis Generator生成mybatis配置相关文件：
+#### 用Mybatis Generator生成mybatis配置相关文件：
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE generatorConfiguration PUBLIC
@@ -471,8 +484,9 @@ public interface UserMapper {
 </mapper>
 ```
 
-### 新建UserService接口及实现类
+#### 新建UserService接口及实现类
 1.IUserService.java
+
 ```java
 package me.ilcb.service;
 
@@ -494,6 +508,7 @@ public interface IUserService {
 ```
 
 2.UserService
+
 ```java
 package me.ilcb.service.impl;
 
@@ -540,8 +555,9 @@ public class UserService implements IUserService {
 }
 ```
 
-### 新建测试类，测试整合是否成功
+#### 新建测试类，测试整合是否成功
 1.UserTest.java
+
 ```java
 import me.ilcb.domain.User;
 import me.ilcb.service.impl.UserService;
@@ -579,8 +595,9 @@ public class UserTest {
 ![success](success.png)
 **至此Spring和Mybatis整合成功**
 
-# 整合SpringMVC
-## 配置spring-mvc.xml
+## 整合SpringMVC
+### 配置spring-mvc.xml
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
@@ -619,7 +636,8 @@ public class UserTest {
 </beans>
 ```
 
-## 配置web.xml
+### 配置web.xml
+
 ```xml
 <!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" 
         "http://java.sun.com/dtd/web-app_2_3.dtd" >
@@ -655,8 +673,8 @@ public class UserTest {
     </servlet-mapping>
 </web-app>
 ```
-## 测试：
-## 在WEB-INF/jsp/目录下新建userList.jsp
+### 在WEB-INF/jsp/目录下新建userList.jsp
+
 ```jsp
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -669,7 +687,8 @@ public class UserTest {
 </body>
 </html>
 ```
-## 新建UserController.java
+### 新建UserController.java
+
 ```java
 package me.ilcb.controller;
 
@@ -698,6 +717,6 @@ public class UserController {
 }
 ```
 
-## 部署并访问项目
+### 部署并访问项目
 ![success1](success1.png)
 **至此，Spring、SpringMVC、Mybatis整合全部完成**
