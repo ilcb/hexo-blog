@@ -376,15 +376,15 @@ public class UserServiceTest {
 > 信息: Loading XML bean definitions from class path resource [spring-aop-xml.xml]
 > Before ===> 执行前置通知============
 > Around ===> 执行环绕通知开始=========
-> ============执行方法findUser(),查找的用户是：aaa=============
+> ============执行方法 findUser(),查找的用户是：aaa=============
 > 输出,方法名：findUser;目标对象：me.ilcb.aop.xml.UserServiceImpl@212bf671;返回值：aaa
 > Around ===> 执行环绕通知结束=========
 > After ===> 执行最终通知============
 > AfterReturning ===> 执行后置通知============
-> 返回值result===================aaa
+> 返回值 result===================aaa
 > Before ===> 执行前置通知============
 > Around ===> 执行环绕通知开始=========
-> ============执行方法addUser()=============
+> ============执行方法 addUser()=============
 > 输出,方法名：addUser;目标对象：me.ilcb.aop.xml.UserServiceImpl@212bf671;返回值：null
 > Around ===> 执行环绕通知结束=========
 > After ===> 执行最终通知============

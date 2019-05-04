@@ -1,6 +1,6 @@
 ---
 layout: _post
-title: Spring AOP实例
+title: Spring AOP 实例
 date: 2017-07-26 17:33:12
 tags: 
     - Spring
@@ -9,7 +9,7 @@ categories:
     - AOP
 ---
 
-## pom.xml配置
+## pom.xml 配置
 
 ```xml
 <properties>
@@ -46,8 +46,8 @@ categories:
 
 ## HTTP 接口鉴权
 需求:
-需要提供的HTTP RESTful服务，服务会提供一些比较敏感的信息，因此对于某些接口的调用会进行调用方权限的校验，而某些不太敏感的接口则不设置权限，或所需要的权限比较低(例如某些监控接口，服务状态接口等)。
-实现需求的方法有很多，例如我们可以在每个HTTP接口方法中对服务请求的调用方进行权限的检查，当调用方权限不符时，方法返回错误。当然这样做并无不可，不过如果我们的api接口很多，每个接口都进行这样的判断，无疑有很多冗余的代码， 并且很有可能有某个粗心的家伙忘记了对调用者的权限进行验证，这样就会造成潜在的 bug。
+需要提供的 HTTP RESTful 服务，服务会提供一些比较敏感的信息，因此对于某些接口的调用会进行调用方权限的校验，而某些不太敏感的接口则不设置权限，或所需要的权限比较低(例如某些监控接口，服务状态接口等)。
+实现需求的方法有很多，例如我们可以在每个 HTTP 接口方法中对服务请求的调用方进行权限的检查，当调用方权限不符时，方法返回错误。当然这样做并无不可，不过如果我们的 api 接口很多，每个接口都进行这样的判断，无疑有很多冗余的代码， 并且很有可能有某个粗心的家伙忘记了对调用者的权限进行验证，这样就会造成潜在的 bug。
 
 提炼一下需求:
 1.可以定制地为某些指定的 HTTP RESTful api 提供权限验证功能。
@@ -59,7 +59,7 @@ categories:
 
 源码:
 
-### AuthChecker.java:
+### AuthChecker.java
 ```java
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
@@ -113,8 +113,8 @@ public class HttpAopAdvice {
     }
 }
 ```
-当被 `AuthChecker` 注解所标注的方法调用前，会执行我们的这个advice，而这个advice的处理逻辑很简单，即从HTTP请求中获取名为`user_token`的cookie的值，如果它的值是`123456`，则我们认为此HTTP请求合法，
-进而调用`joinPoint.proceed()`将HTTP请求转交给相应的控制器处理；而如果`user_token`cookie的值不是`123456`，或为空，则认为此HTTP请求非法, 返回错误。
+当被 `AuthChecker` 注解所标注的方法调用前，会执行我们的这个 advice，而这个 advice 的处理逻辑很简单，即从 HTTP 请求中获取名为`user_token`的 cookie 的值，如果它的值是`123456`，则我们认为此 HTTP 请求合法，
+进而调用`joinPoint.proceed()`将 HTTP 请求转交给相应的控制器处理；而如果`user_token`cookie 的值不是`123456`，或为空，则认为此 HTTP 请求非法, 返回错误。
 
 ### AuthController.java（HTTP 接口）
 ```java
@@ -157,15 +157,15 @@ public class App {
 }
 ```
 启动服务，验证下服务是否有效:
-首先在 Advanced rest client中,调用 **/aop/http/alive** 接口，请求头中不加任何参数：
+首先在 Advanced rest client 中,调用 **/aop/http/alive** 接口，请求头中不加任何参数：
 ![1](1.png)
 请求 /aop/http/user_info 接口：
 
 ![2](2.png)
 请求 **/aop/http/user_info** 接口时，服务返回一个权限异常的错误，为什么会这样呢？
-自然就是我们的权限认证系统起了作用：当一个方法被调用并且这个方法有`AuthChecker` 注解时，那么首先会执行到我们的`around advice`，在这个advice中会校验HTTP请求的cookie字段中是否有携带`user_token`字段， 
+自然就是我们的权限认证系统起了作用：当一个方法被调用并且这个方法有`AuthChecker` 注解时，那么首先会执行到我们的`around advice`，在这个 advice 中会校验 HTTP 请求的 cookie 字段中是否有携带`user_token`字段， 
 如果没有，则返回权限错误。
-那么为了能够正常地调用 **/aop/http/user_info** 接口，我们可以在Cookie中添加**user_token=123456**；
+那么为了能够正常地调用 **/aop/http/user_info** 接口，我们可以在 Cookie 中添加**user_token=123456**；
 ![3](3.png)
 
 ## 方法调用日志
@@ -294,7 +294,7 @@ public class App {
 }
 ```
 
-### 结果：
+### 结果
 ```txt
  ---Before method logMethod invoke, params :[Ljava.lang.Object;@7ef2d7a6
  ---NeedLogService: logMethod invoked, param:xys
