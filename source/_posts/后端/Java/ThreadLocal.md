@@ -1,38 +1,52 @@
 ---
 layout: _post
-title: "ThreadLocal"
+title: ThreadLocal
 date: 2017-08-01 
-tags: "Java"
-categories: "java"
+tags: 
+    - Java
+    - 并发
+categories: 
+    - Java
 ---
 
-# ThreadLocal是什么
-+ 早在JDK 1.2的版本中就提供java..lang.ThreadLocal，ThreadLocal为解决多线程程序的并发问题提供了一种新的思路。
-+ ThreadLocal可以看做是一个容器，容器里面存放着属于当前线程的变量。当使用ThreadLocal维护变量时，ThreadLocal为每个使用该变量的线程提供独立的变量副本，所以每一个线程都可以独立地改变自己的副本，而不会影响其它线程所对应的副本。
+## ThreadLocal 是什么
++ 早在 JDK 1.2 的版本中就提供 java.lang.ThreadLocal，ThreadLocal 为解决多线程程序的
+  并发问题提供了一种新的思路。
++ ThreadLocal 可以看做是一个容器，容器里面存放着属于当前线程的变量。当使用 ThreadLocal 维护变量时，ThreadLocal 为每个使用该变量的线程提供独立的变量副本，所以每一个线程都可以独立地改变自己的副本，而不会影响其它线程所对应的副本。
 + 从线程的角度看，目标变量就象是线程的本地变量，这也是类名中“Local”所要表达的意思。
-+ 官方对ThreadLocal的解释：该类提供了线程局部 (thread-local) 变量。这些变量不同于它们的普通对应物，因为访问某个变量（通过其get或set方法）的每个线程都有自己的局部变量，它独立于变量的初始化副本。
-  ThreadLocal 实例通常是类中的 private static 字段，它们希望将状态与某一个线程（例如，用户 ID 或事务 ID）相关联;
++ 官方对 ThreadLocal 的解释：该类提供了线程局部 (thread-local) 变量。这些变量
+  不同于它们的普通对应物，因为访问某个变量（通过其 get 或 set 方法）的每个线程都
+  有自己的局部变量，它独立于变量的初始化副本。
 
-我们从中提取出3个要点：
+ThreadLocal 实例通常是类中的 private static 字段，它们希望将状态与某一个线程
+（例如，用户 ID 或事务 ID）相关联;
+
+我们从中提取出 3 个要点：
 1. 每个线程都有自己的局部变量
- 每个线程都有一个独立于其他线程的上下文来保存这个变量，一个线程的本地变量对其他线程是不可见的
+   每个线程都有一个独立于其他线程的上下文来保存这个变量，一个线程的本地变量对其他线程是不可见的
 2. 独立于变量的初始化副本
- ThreadLocal可以给一个初始值，而每个线程都会获得这个初始化值的一个副本，这样才能保证不同的线程都有一份拷贝。
+   ThreadLocal 可以给一个初始值，而每个线程都会获得这个初始化值的一个副本，这样才能保证不同的线程都有一份拷贝。
 3. 状态与某一个线程相关联
- ThreadLocal 不是用于解决共享变量的问题的，不是为了协调线程同步而存在，而是为了方便每个线程处理自己的状态而引入的一个机制，理解这点对正确使用ThreadLocal至关重要。
+   ThreadLocal 不是用于解决共享变量的问题的，不是为了协调线程同步而存在，而是为了方便每个线程处理自己的状态而引入的一个机制，理解这点对正确使用 ThreadLocal 至关重要。
 
-# ThreadLocal的接口方法
-ThreadLocal类接口:
+## ThreadLocal 的接口方法
+ThreadLocal 类接口:
 + void set(Object value)：设置当前线程的线程局部变量的值。
 + public Object get()：该方法返回当前线程所对应的线程局部变量。
-+ public void remove()：将当前线程局部变量的值删除，目的是为了减少内存的占用，该方法是JDK 5.0新增的方法。需要指出的是，当线程结束后，
-  对应该线程的局部变量将自动被垃圾回收，所以显式调用该方法清除线程的局部变量并不是必须的操作，但它可以加快内存回收的速度。
-+ protected Object initialValue()：返回该线程局部变量的初始值，该方法是一个protected的方法显然是为了让子类覆盖而设计的。这个方法是一个延迟调用方法，在线程第1次调用get()或set(Object)
-  时才执行，并且仅执行1次，ThreadLocal中的缺省实现直接返回一个null。
-  在JDK5.0中，ThreadLocal已经支持泛型，该类的类名已经变为ThreadLocal<T>。API方法也相应进行了调整，新版本的API方法分别是void set(T value)、T get()以及T initialValue()。
-  
-  ThreadLocal是如何做到为每一个线程维护变量的副本的呢？其实实现的思路很简单：在ThreadLocal类中有一个Map，用于存储每一个线程的变量副本，Map中元素的键为线程对象，而值对应线程的变量副本。
-# 示例1：
++ public void remove()：将当前线程局部变量的值删除，目的是为了减少内存的占用，该方法是 
+  JDK 5.0 新增的方法。需要指出的是，当线程结束后，对应该线程的局部变量将自动被垃圾回收，
+  所以显式调用该方法清除线程的局部变量并不是必须的操作，但它可以加快内存回收的速度。
++ protected Object initialValue()：返回该线程局部变量的初始值，该方法是一个 
+  protected 的方法显然是为了让子类覆盖而设计的。这个方法是一个延迟调用方法，在线程第 1 次调用 get()或 set(Object)时才执行，并且仅执行 1 次，ThreadLocal 中的缺省实现直接
+  返回一个 null。
+
+在 JDK5.0 中，ThreadLocal 已经支持泛型，该类的类名已经变为 ThreadLocal<T>。API 方法也相应进行了调整，新版本的 API 方法分别是 void set(T value)、T get()以及 T initialValue()。
+
+**ThreadLocal 是如何做到为每一个线程维护变量的副本的呢？其实实现的思路很简单：在 ThreadLocal 类中有一个 Map，用于存储每一个线程的变量副本，Map 中元素的键为线程
+对象，而值对应线程的变量副本。**
+
+### 示例 1
+
 ```java
 public class ThreadLocalTest {
     public static final ThreadLocal<Integer> local = new ThreadLocal<Integer>(){
@@ -66,7 +80,7 @@ public class ThreadLocalTest {
 }
 ```
 
-结果：每个线程累加后的结果都是5，各个线程处理自己的本地变量值，线程之间互不影响
+结果：每个线程累加后的结果都是 5，各个线程处理自己的本地变量值，线程之间互不影响
 ```txt
 Thread->0====>5
 Thread->4====>5
@@ -75,7 +89,8 @@ Thread->1====>5
 Thread->2====>5
 ```
 
-# 示例2
+### 示例 2
+
 ```java
 public class ThreadLocalDemo {
     static class Index{
@@ -126,7 +141,7 @@ Thread->4====>20
 Thread->3====>25
 ```
 
-为什么线程本地变量又失效了呢？再来回味一下 “ThreadLocal可以给一个初始值，而每个线程都会获得这个初始化值的一个副本” ，再来看一下上面代码中定义ThreadLocal的地方：
+为什么线程本地变量又失效了呢？再来回味一下 “ThreadLocal 可以给一个初始值，而每个线程都会获得这个初始化值的一个副本” ，再来看一下上面代码中定义 ThreadLocal 的地方：
 ```java
 private static ThreadLocal<Index> local = new ThreadLocal<Index>(){
     protected Index initialValue() {
@@ -134,11 +149,11 @@ private static ThreadLocal<Index> local = new ThreadLocal<Index>(){
     }
 };
 ```
-上面代码中，我们通过覆盖initialValue函数来给我们的ThreadLocal提供初始值，每个线程都会获取这个初始值的一个副本。而现在我们的初始值是一个定义好的一个对象，num是这个对象的引用。
+上面代码中，我们通过覆盖 initialValue 函数来给我们的 ThreadLocal 提供初始值，每个线程都会获取这个初始值的一个副本。而现在我们的初始值是一个定义好的一个对象，num 是这个对象的引用。
 换句话说我们的初始值是一个引用，引用的副本和引用指向的不就是同一个对象吗？
 
-![1](/images/threadlocal/1.png)
-如果想给每一个线程都保存一个Index对象应该怎么办呢？那就是创建对象的副本而不是对象引用的副本：
+![1](1.png)
+如果想给每一个线程都保存一个 Index 对象应该怎么办呢？那就是创建对象的副本而不是对象引用的副本：
 
 ```java
 private static ThreadLocal<Index> local = new ThreadLocal<Index>(){
@@ -150,9 +165,9 @@ private static ThreadLocal<Index> local = new ThreadLocal<Index>(){
 
 ![2](2.png)
 
-# ThreadLocal源码
-ThreadLocal有一个内部类ThreadLocalMap，这个ThreadLocalMap的作用非常关键，它就是线程真正保存线程自己本地变量的容器。
-每一个线程都有自己的单独的一个ThreadLocalMap实例，其所有的本地变量都会保存到这一个map中。现在就让我们从ThreadLocal的get和set这两个最常用的方法开始分析：
+## ThreadLocal 源码
+ThreadLocal 有一个内部类 ThreadLocalMap，这个 ThreadLocalMap 的作用非常关键，它就是线程真正保存线程自己本地变量的容器。
+每一个线程都有自己的单独的一个 ThreadLocalMap 实例，其所有的本地变量都会保存到这一个 map 中。现在就让我们从 ThreadLocal 的 get 和 set 这两个最常用的方法开始分析：
 get()方法：
 
 ```java
@@ -174,10 +189,10 @@ public T get() {
     }
 ```
 
-线程隔离的秘密，就在于ThreadLocalMap这个类。ThreadLocalMap是ThreadLocal类的一个静态内部类，它实现了键值对的设置和获取，每个线程中都有一个独立的ThreadLocalMap副本，它所存储的值，只能被当前线程读取和修改。
-ThreadLocal类通过操作每一个线程特有的ThreadLocalMap副本，从而实现了变量访问在不同线程中的隔离。因为每个线程的变量都是自己特有的，完全不会有并发错误。
-还有一点就是，ThreadLocalMap存储的键值对中的键是this对象指向的ThreadLocal对象，而值就是你所设置的对象了。
-一个线程对象第一次使用线程本地变量的时候，需要对这个threadLocals属性进行初始化操作。
+线程隔离的秘密，就在于 ThreadLocalMap 这个类。ThreadLocalMap 是 ThreadLocal 类的一个静态内部类，它实现了键值对的设置和获取，每个线程中都有一个独立的 ThreadLocalMap 副本，它所存储的值，只能被当前线程读取和修改。
+ThreadLocal 类通过操作每一个线程特有的 ThreadLocalMap 副本，从而实现了变量访问在不同线程中的隔离。因为每个线程的变量都是自己特有的，完全不会有并发错误。
+还有一点就是，ThreadLocalMap 存储的键值对中的键是 this 对象指向的 ThreadLocal 对象，而值就是你所设置的对象了。
+一个线程对象第一次使用线程本地变量的时候，需要对这个 threadLocals 属性进行初始化操作。
 注意要区别 “线程第一次使用本地线程变量”和“第一次使用某一个线程本地线程变量”。
 
 set()方法:
@@ -231,7 +246,8 @@ public void remove() {
 }
 ```
 
-# 自定义ThreadLocal
+## 自定义 ThreadLocal
+
 ```java
 import java.util.Collections;
 import java.util.HashMap;
