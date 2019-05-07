@@ -1,6 +1,6 @@
 ---
 layout: _post
-title: sql 优化
+title: Sql 优化
 date: 2017-07-3110：26
 tags: 
   - sql
@@ -10,6 +10,8 @@ categories:
 ---
 ## 引言
 对查询进行优化，应尽量避免全表扫描，首先应考虑在 where 及 order by 涉及的列上建立索引；
+
+## 索引优化Tips：
 
 + 尽量避免在 where 子句中对字段进行 null 值判断，否则将导致引擎放弃使用索引而进行全表扫描；
   ``select id from t where num is null;``
@@ -80,6 +82,8 @@ categories:
   a.有大量重复值、且经常有范围查询 (>, <, >=, <=) 和 orderby、groupby 发生的列，可考虑建立集群索引；
   b.经常同时存取多列，且每列都含有重复值可考虑建立组合索引；
   c.组合索引要尽量使关键查询形成索引覆盖，其前导列一定是使用最频繁的列。索引虽有助于提高性能但不是索引越多越好，恰好相反过多的索引会导致系统低效。用户在表中每加进一个索引，维护索引集合就要做相应的更新工作；
+
+## 表优化Tips
 + 定期分析表和检查表：
   分析表的语法: ANALYZE [LOCAL | NO_WRITE_TO_BINLOG] TABLE tab1name [,tab1name]...
   以上语句用于分析和存储表的关键字分布，分析的结果将可以使得系统得到准确的统计信息，使得 SQL 能够生成正确的执行计划。如果用户感觉实际执行计划并不是预期的执行计划，执行一次分析表可能会解决问题。
@@ -94,7 +98,8 @@ categories:
   这个命令可以将表中的空间碎片进行合并，并且可以消除由于删除或者更新造成的空间浪费，但 OPTIMIZETABLE 命令只对 MyISAM、BDB 和 InnoDB 表起作用。
   例如 optimize table table_name;
   注意：analyze、check、optimize 执行期间将对表进行锁定，因此一定注意要在 MySQL 数据库不繁忙的时候执行相关的操作。
-+ 补充：
+
+## 补充：
   1、在海量查询时尽量少用格式转换；
   2、ORDER BY 和 GROPU BY：使用 ORDER BY 和 GROUP BY 短语，任何一种索引都有助于 SELECT 的性能提高；
   3、任何对列的操作都将导致表扫描，它包括数据库教程函数、计算表达式等等，查询时要尽可能将操作移至等号右边；
@@ -105,3 +110,156 @@ categories:
   8、如果数据只有少量的几个，最好使用 ENUM 类型；
   9、正如 graymice 所讲的那样，建立索引；
   10、合理用运分表与分区表提高数据存放和提取速度；
+
+## explain分析sql执行计划
+
+explain命令在解决数据库性能上是非常有效的命令，大部分的性能问题可以通过此命令来简单的解决，explain可以用来查看SQL语句的执行效果，可以帮助选择更好的索引和优化查询语句，写出更好的优化语句。
+
+explain语法：explain select … from … [where …]
+
+例如：explain select id, name from user;
+
+输出：
+![explain](explain.png)
+下面对各个属性进行了解：
+
+1. id：这是SELECT的查询序列号，id越大，优先级越高，越先执行
+2. select_type：select_type就是select的类型，可以有以下几种：
+    + SIMPLE：简单SELECT(不使用UNION或子查询等)
+    + PRIMARY：查询中若包含任何复杂的子查询，则最外层被标记为primary
+    + UNION：若第二个select出现在union之后，则被标记为union；若union包含在from子句的子查询中，外层select将被标记为：derived
+    + DEPENDENT UNION：UNION中的第二个或后面的SELECT语句，取决于外面的查询
+    + UNION RESULT：两种union结果的合并
+    + SUBQUERY：在select或where列表包含了子查询
+    + DEPENDENT SUBQUERY：子查询中的第一个SELECT，取决于外面的查询
+    + DERIVED：在from列表中包含的子查询被标记为derived（衍生），mysql会递归执行这些子查询，把结果放在临时表
+3. table：显示这一行的数据是关于哪张表的
+4. partitions：匹配到的分区
+5. type：显示了使用了哪种类别，有无使用索引，是使用Explain命令分析性能瓶颈的关键项之一
+    + system：表仅有一行(=系统表)，这是const联接类型的一个特例。
+    + const：表示通过索引一次就找到了，const用于比较primary key 或者unique索引。如将主键置于where列表中，MySQL就能将该查询转换为一个常量
+    + eq_ref：唯一性索引扫描，对于每个索引键，表中只有一条记录与之匹配。常见于PRIMARY KEY或UNIQUE索引扫描
+    + ref：对于每个来自于前面的表的行组合，所有有匹配索引值的行将从这张表中读取。如果联接只使用键的最左边的前缀，或如果键不是UNIQUE或PRIMARY KEY(换句话说，如果联接不能基于关键字选择单个行的话)，则使用ref。如果使用的键仅仅匹配少量行，该联接类型是不错的。ref可以用于使用=或<=>操作符的带索引的列。
+    + ref_or_null：该联接类型如同ref，但是添加了MySQL可以专门搜索包含NULL值的行。在解决子查询中经常使用该联接类型的优化。
+    + index_merge：该联接类型表示使用了索引合并优化方法。在这种情况下，key列包含了使用的索引的清单，key_len包含了使用的索引的最长的关键元素。
+    + unique_subquery：该类型替换了下面形式的IN子查询的ref：value IN (SELECT primary_key FROMsingle_table WHERE some_expr);unique_subquery是一个索引查找函数，可以完全替换子查询，效率更高。
+    + index_subquery：该联接类型类似于unique_subquery。可以替换IN子查询，但只适合下列形式的子查询中的非唯一索引：value IN (SELECT key_column FROM single_table WHERE some_expr)
+    + range：只检索给定范围的行，使用一个索引来选择行。key列显示使用了哪个索引。key_len包含所使用索引的最长关键元素。在该类型中ref列为NULL。当使用=、<>、>、>=、<、<=、IS NULL、<=>、BETWEEN或者IN操作符，用常量比较关键字列时，可以使用range
+    + index：该联接类型与ALL相同，除了只有索引树被扫描。这通常比ALL快，因为索引文件通常比数据文件小。
+    + all：对于每个来自于先前的表的行组合，进行完整的表扫描。如果表是第一个没标记const的表，这通常不好，并且通常在它情况下很差。通常可以增加更多的索引而不要使用ALL，使得行能基于前面的表中的常数值或列值被检索出。
+> 结果值从好到坏依次是：
+> system > const > eq_ref > ref > fulltext > ref_or_null > index_merge > unique_subquery > index_subquery > range > index > ALL
+> 一般来说，得保证查询至少达到range级别，最好能达到ref，否则就可能会出现性能问题。
+5. possible_keys：possible_keys列指出MySQL能使用哪个索引在该表中找到行。注意，该列完全独立于EXPLAIN输出所示的表的次序。这意味着在possible_keys中的某些键实际上不能按生成的表次序使用
+6. key：key列显示MySQL实际决定使用的键(索引)。如果没有选择索引，键是NULL。要想强制MySQL使用或忽视possible_keys列中的索引，在查询中使用FORCE INDEX、USE INDEX或者IGNORE INDEX
+7. key_len：显示MySQL决定使用的键长度。如果键是NULL，则长度为NULL。使用的索引的长度。在不损失精确性的情况下，长度越短越好
+8. ref：显示使用哪个列或常数与key一起从表中选择行。
+9. rows：显示MySQL认为它执行查询时必须检查的行数。
+10. filtered：表示此查询条件所过滤的数据的百分比
+11. Extra：该列包含MySQL解决查询的详细信息。
+    + Distinct：MySQL发现第1个匹配行后，停止为当前的行组合搜索更多的行。
+    + Not exists：MySQL能够对查询进行LEFT JOIN优化，发现1个匹配LEFT JOIN标准的行后，不再为前面的的行组合在该表内检查更多的行。
+    + range checked for each record (index map: #)：MySQL没有发现好的可以使用的索引，但发现如果来自前面的表的列值已知，可能部分索引可以使用。对前面的表的每个行组合，MySQL检查是否可以使用range或index_merge访问方法来索取行。
+    + Using filesort：MySQL需要额外的一次传递，以找出如何按排序顺序检索行。通过根据联接类型浏览所有行并为所有匹配WHERE子句的行保存排序关键字和行的指针来完成排序。然后关键字被排序，并按排序顺序检索行。
+    + Using index：从只使用索引树中的信息而不需要进一步搜索读取实际的行来检索表中的列信息。当查询只使用作为单一索引一部分的列时，可以使用该策略。
+    + Using temporary：为了解决查询，MySQL需要创建一个临时表来容纳结果。典型情况如查询包含可以按不同情况列出列的GROUP BY和ORDER BY子句时。
+    + Using where：WHERE子句用于限制哪一个行匹配下一个表或发送到客户。除非你专门从表中索取或检查所有行，如果Extra值不为Using where并且表联接类型为ALL或index，查询可能会有一些错误。
+    + Using sort_union(...), Using union(...), Using intersect(...)：这些函数说明如何为index_merge联接类型合并索引扫描。
+    + Using index for group-by：类似于访问表的Using index方式，Using index for group-by表示MySQL发现了一个索引，可以用来查询GROUP BY或DISTINCT查询的所有列，而不要额外搜索硬盘访问实际的表。并且，按最有效的方式使用索引，以便对于每个组，只读取少量索引条目。
+
+## 慢查询分析
+### 慢查询日志开关
++ 查看开关状态
+
+```sql
+show variables like 'slow_query_log';
+```
+
+![slow_query_on_off](slow_query_on_off.png)
++ 开启慢查询
+
+```sql
+set global slow_query_log=1;
+#此命令只对当前数据库有效，如果mysql重启后，则会失效，如果要想一直有效，则要配置my.cnf文件，配置如下：
+#修改my.cnf文件，[mysqld]下增加或修改参数slow_query_log和slow_query_log_file后，然后重启mysql服务器。
+#即将如下两行配置进my.cnf文件([mysqld]下配置)：
+slow_query_log = 1;
+slow_query_log_file = /usr/local/mysql/data/slow.log;
+long_query_time = 3;
+```
+
+![slow_query_on](slow_query_on.png)
+
+### 慢查询时间阀值
+
+设置超过多少秒的查询为慢查询
+
++ 查看慢查询时间阀值
+
+```sql
+show variables like 'slow_query_log'
+```
+
+![query_time](query_time.png)
++ 设置时间阀值
+
+```sql
+set global long_query_time=3;
+```
+
+![set_long_query_time](set_long_query_time.png)
+### 慢查询日志文件
+
+```sql
+# 查看慢查询日志文件
+show global variables like 'slow_query_log_file'
+# 设置慢查询日志文件
+set global slow_query_log_file='/usr/local/mysql/data/slow.log'
+```
+
+### 查看多少条SQL语句超过了阙值
+
+```sql
+show global status like 'Slow_queries';
+```
+
+![slow_query_count](slow_query_count.png)
+
+### 日志分析工具mysqldumpslow
+![mysqldumpslow](mysqldumpslow.png)
+示例：
+
+```sql
+# 得到返回记录集最多的10个sql
+mysqldumpslow -s r -t 10 slow.log	
+
+# 得到访问次数最多的10个sql
+mysqldumpslow -s c -t 10 slow.log
+
+# 得到按照时间排序的前10条里面含有左连接的查询语句
+mysqldumpslow -s t -t 10 -g "left join" slow.log
+```
+
+## show profile
+Show profile 查询SQL语句在服务器中的执行细节和生命周期
+Show Profile是MySQL提供可以用来分析当前会话中语句执行的资源消耗情况，可以用于SQL的调优测量
+默认关闭，并保存最近15次的运行结果
+分析步骤
+1. 查看状态：SHOW VARIABLES LIKE 'profiling';
+2. 开启：set profiling=on;
+3. 查看结果：show profiles;
+4. 诊断SQL：show profile cpu,block io for query 上一步SQL数字号码;
+    + ALL：显示所有开销信息
+    + BLOCK IO：显示IO相关开销
+    + CONTEXT SWITCHES：显示上下文切换相关开销
+    + CPU：显示CPU相关开销
+    + IPC：显示发送接收相关开销
+    + MEMORY：显示内存相关开销
+    + PAGE FAULTS：显示页面错误相关开销
+    + SOURCE：显示和Source_function，Source_file，Source_line相关开销
+    + SWAPS：显示交换次数相关开销
+   注意（遇到这几种情况要优化）
+    + converting HEAP to MyISAM： 查询结果太大，内存不够用往磁盘上搬
+    + Creating tmp table：创建临时表
+    + Copying to tmp table on disk：把内存中的临时表复制到磁盘
+    + locked
