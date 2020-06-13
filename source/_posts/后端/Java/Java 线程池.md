@@ -2,6 +2,7 @@
 layout: _post
 title: Java 线程池
 date: 2017-08-02
+cover: true
 tags: 
     - Java
     - 多线程

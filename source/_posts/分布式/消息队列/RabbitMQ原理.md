@@ -10,14 +10,13 @@ categories:
     - 消息队列
 ---
 RabbitMQ 是一个由 erlang 开发的 AMQP（Advanced Message Queue ）的开源实现
+
 ## 什么是 AMQP
 AMQP（高级消息队列协议）是一个网络协议。支持符合要求的客户端应用（application）和消息中间件代理（messaging middleware broker）之间进行通信。
-
 消息代理（message brokers）从发布者（publishers）亦称生产者（producers）那儿接收消息，并根据既定的路由规则把接收到的消息发送给处理消息的消费者（consumers）。
-
 由于 AMQP 是一个网络协议，所以这个过程中的发布者，消费者，消息代理 可以存在于不同的设备上。
-## AMQP 原理
 
+## AMQP 原理
 ![amqp](amqp.png)
 
 AMQP 工作过程如下图：消息（message）被发布者（publisher）发送给交换机（exchange），然后交换机将收到的消息根据路由规则分发给绑定的队列（queue）。最后 AMQP 代理会将消息投递给订阅了此队列的消费者，或者消费者按照需求自行获取。

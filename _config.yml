@@ -3,9 +3,9 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: ilcb's home
-subtitle: 梦想乌托邦
-description: Do it simple, makes it perfect.
+title: ✨ Ilcb's Blog
+subtitle: Ilcb's Blog
+description: Stay hungry, Stay foolish!
 author: lee.ilcb
 language: zh-CN
 timezone:
@@ -90,6 +90,7 @@ plugins: hexo-generate-feed
 
 ## Themes: https://hexo.io/themes/
 theme: hexo-theme-matery
+## theme: obsidian
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html

@@ -2,6 +2,7 @@
 layout: _post
 title: Java 异常
 date: 2019-04-29
+cover: true
 tags: 
   - Java
   - 异常
