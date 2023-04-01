@@ -1,10 +1,10 @@
 ---
 layout: _post
-title: Sql 优化
+title: SQL 优化
 date: 2017-07-3110：26
 tags: 
-  - sql
-  - mysql
+  - SQL
+  - MySQL
 categories: 
   - 数据库
 ---
@@ -111,16 +111,16 @@ categories:
   9、正如 graymice 所讲的那样，建立索引；
   10、合理用运分表与分区表提高数据存放和提取速度；
 
-## explain 分析 sql 执行计划
+## ex 分析 sql 执行计划
 
-explain 命令在解决数据库性能上是非常有效的命令，大部分的性能问题可以通过此命令来简单的解决，explain 可以用来查看 SQL 语句的执行效果，可以帮助选择更好的索引和优化查询语句，写出更好的优化语句。
+ex 命令在解决数据库性能上是非常有效的命令，大部分的性能问题可以通过此命令来简单的解决，ex 可以用来查看 SQL 语句的执行效果，可以帮助选择更好的索引和优化查询语句，写出更好的优化语句。
 
-explain 语法：explain select …… from … [where ……]
+ex 语法：ex select …… from … [where ……]
 
-例如：explain select id, name from user;
+例如：ex select id, name from user;
 
 输出：
-![explain](explain.png)
+![ex](ex.png)
 下面对各个属性进行了解：
 
 1. id：这是 SELECT 的查询序列号，id 越大，优先级越高，越先执行
@@ -132,10 +132,10 @@ explain 语法：explain select …… from … [where ……]
     + UNION RESULT：两种 union 结果的合并
     + SUBQUERY：在 select 或 where 列表包含了子查询
     + DEPENDENT SUBQUERY：子查询中的第一个 SELECT，取决于外面的查询
-    + DERIVED：在 from 列表中包含的子查询被标记为 derived（衍生），mysql 会递归执行这些子查询，把结果放在临时表
+    + DERIVED：在 from 列表中包含的子查询被标记为 derived（衍生），MySQL 会递归执行这些子查询，把结果放在临时表
 3. table：显示这一行的数据是关于哪张表的
 4. partitions：匹配到的分区
-5. type：显示了使用了哪种类别，有无使用索引，是使用 Explain 命令分析性能瓶颈的关键项之一
+5. type：显示了使用了哪种类别，有无使用索引，是使用 Ex 命令分析性能瓶颈的关键项之一
     + system：表仅有一行(=系统表)，这是 const 联接类型的一个特例。
     + const：表示通过索引一次就找到了，const 用于比较 primary key 或者 unique 索引。如将主键置于 where 列表中，MySQL 就能将该查询转换为一个常量
     + eq_ref：唯一性索引扫描，对于每个索引键，表中只有一条记录与之匹配。常见于 PRIMARY KEY 或 UNIQUE 索引扫描
@@ -150,7 +150,7 @@ explain 语法：explain select …… from … [where ……]
 > 结果值从好到坏依次是：
 > system > const > eq_ref > ref > fulltext > ref_or_null > index_merge > unique_subquery > index_subquery > range > index > ALL
 > 一般来说，得保证查询至少达到 range 级别，最好能达到 ref，否则就可能会出现性能问题。
-5. possible_keys：possible_keys 列指出 MySQL 能使用哪个索引在该表中找到行。注意，该列完全独立于 EXPLAIN 输出所示的表的次序。这意味着在 possible_keys 中的某些键实际上不能按生成的表次序使用
+5. possible_keys：possible_keys 列指出 MySQL 能使用哪个索引在该表中找到行。注意，该列完全独立于 EX 输出所示的表的次序。这意味着在 possible_keys 中的某些键实际上不能按生成的表次序使用
 6. key：key 列显示 MySQL 实际决定使用的键(索引)。如果没有选择索引，键是 NULL。要想强制 MySQL 使用或忽视 possible_keys 列中的索引，在查询中使用 FORCE INDEX、USE INDEX 或者 IGNORE INDEX
 7. key_len：显示 MySQL 决定使用的键长度。如果键是 NULL，则长度为 NULL。使用的索引的长度。在不损失精确性的情况下，长度越短越好
 8. ref：显示使用哪个列或常数与 key 一起从表中选择行。
@@ -180,11 +180,11 @@ show variables like 'slow_query_log';
 
 ```sql
 set global slow_query_log=1;
-#此命令只对当前数据库有效，如果mysql重启后，则会失效，如果要想一直有效，则要配置my.cnf文件，配置如下：
-#修改my.cnf文件，[mysqld]下增加或修改参数slow_query_log和slow_query_log_file后，然后重启mysql服务器。
-#即将如下两行配置进my.cnf文件([mysqld]下配置)：
+#此命令只对当前数据库有效，如果MySQL重启后，则会失效，如果要想一直有效，则要配置my.cnf文件，配置如下：
+#修改my.cnf文件，[MySQLd]下增加或修改参数slow_query_log和slow_query_log_file后，然后重启MySQL服务器。
+#即将如下两行配置进my.cnf文件([MySQLd]下配置)：
 slow_query_log = 1;
-slow_query_log_file = /usr/local/mysql/data/slow.log;
+slow_query_log_file = /usr/local/MySQL/data/slow.log;
 long_query_time = 3;
 ```
 
@@ -214,7 +214,7 @@ set global long_query_time=3;
 # 查看慢查询日志文件
 show global variables like 'slow_query_log_file'
 # 设置慢查询日志文件
-set global slow_query_log_file='/usr/local/mysql/data/slow.log'
+set global slow_query_log_file='/usr/local/MySQL/data/slow.log'
 ```
 
 ### 查看多少条 SQL 语句超过了阙值
@@ -225,19 +225,19 @@ show global status like 'Slow_queries';
 
 ![slow_query_count](slow_query_count.png)
 
-### 日志分析工具 mysqldumpslow
-![mysqldumpslow](mysqldumpslow.png)
+### 日志分析工具 MySQLdumpslow
+![MySQLdumpslow](MySQLdumpslow.png)
 示例：
 
 ```sql
 # 得到返回记录集最多的10个sql
-mysqldumpslow -s r -t 10 slow.log	
+MySQLdumpslow -s r -t 10 slow.log	
 
 # 得到访问次数最多的10个sql
-mysqldumpslow -s c -t 10 slow.log
+MySQLdumpslow -s c -t 10 slow.log
 
 # 得到按照时间排序的前10条里面含有左连接的查询语句
-mysqldumpslow -s t -t 10 -g "left join" slow.log
+MySQLdumpslow -s t -t 10 -g "left join" slow.log
 ```
 
 ## show profile

@@ -1,19 +1,19 @@
 ---
 layout: _post
-title: MySql-事务
+title: MySQL-事务
 date: 2019-04-30
 tags: 
-    - mysql
+    - MySQL
     - 事务
     - 数据库
 categories: 
     - 数据库
-    - mysql
+    - MySQL
 ---
-## MySql 中怎么实现事务
-### mysql 中事务相关的语句
+## MySQL 中怎么实现事务
+### MySQL 中事务相关的语句
 #### autocommit
-autocommit 设置事务是否自动提交(mysql 默认为自动提交)
+autocommit 设置事务是否自动提交(MySQL 默认为自动提交)
 ```sql
 ## 查看事务是否自动提交
 show global variables like 'autocommit%';
@@ -57,14 +57,14 @@ CREATE TABLE `user` (
 3. 删除了 id 为 2 的记录
 回滚到保存点 delete1，步骤 2、3 中的操作回滚，delete1 之前的操作保留
 
-## MySql 事务实现原理
-在 MySql 中，InnoDB 存储引擎是支持事务的，一个事务必须满足 4 大特性：
-原子性：整个事务的所有操作要么全部成功，要么全部失败，在 MySql 中通过 redo log 日志实现
-一致性：数据库总是从一个一执行状态变为另一个一致性状态，在 MySql 中通过 undo log 实现
-隔离型：一个事务在提交之前所做出的操作是否能为其他事务可见，有不同的隔离级别，在 MySql 中通过锁及 MVCC 来实现
-持久性：事务一旦提交，事务所做的修改会被永久保存，即使数据库崩溃，修改的数据也不会丢失，在 MySql 中通过 redo log 日志实现
+## MySQL 事务实现原理
+在 MySQL 中，InnoDB 存储引擎是支持事务的，一个事务必须满足 4 大特性：
+原子性：整个事务的所有操作要么全部成功，要么全部失败，在 MySQL 中通过 redo log 日志实现
+一致性：数据库总是从一个一执行状态变为另一个一致性状态，在 MySQL 中通过 undo log 实现
+隔离型：一个事务在提交之前所做出的操作是否能为其他事务可见，有不同的隔离级别，在 MySQL 中通过锁及 MVCC 来实现
+持久性：事务一旦提交，事务所做的修改会被永久保存，即使数据库崩溃，修改的数据也不会丢失，在 MySQL 中通过 redo log 日志实现
 
-### mysql 事务日志参数
+### MySQL 事务日志参数
 ```sql
 show global variables like '%innodb%log%';
 ```
@@ -78,7 +78,7 @@ show global variables like '%innodb%log%';
 如果值设置为 2，表示在事务提交时，只会将 redo log 写入到系统缓存（os buffer）中，但是不会立即写入到 redo log file 中，而是每秒中从 os buffer 中刷新到 redo log file 中，可以理解为当日志提交时，redo log 存在于 redo log buffer 和 os buffer 中，每秒钟 redo log 从 os buffer 中刷新到 redo log file 中 1 次，这种情况下，如果只是数据库宕机，操作系统未宕机，数据不会丢失，如果此时操作习题哦那个宕机，重启数据库后会丢失还未从 os buffer 中刷新到 redo log file 中的事务操作；
 
 ### redo log
-mysql 会将事务中的 sql 语句涉及的所有数据操作先记录到 redo log 中，然后再将操作从 redo log 同步到相应数据文件中，即在事务提交成功，修改数据文件中的记录之前，要保证对应的所有修改操作都已经记录到了 redo log 中，所以，即使数据文件中的数据被修改到一半时被打断，也能依靠 redo log 中的日志将剩余部分的操作再次同步到相应的数据文件中。redo log 是物理日志，记录的是数据库对页的操作，而不是逻辑上的增删改查，具有幂等性。
+MySQL 会将事务中的 sql 语句涉及的所有数据操作先记录到 redo log 中，然后再将操作从 redo log 同步到相应数据文件中，即在事务提交成功，修改数据文件中的记录之前，要保证对应的所有修改操作都已经记录到了 redo log 中，所以，即使数据文件中的数据被修改到一半时被打断，也能依靠 redo log 中的日志将剩余部分的操作再次同步到相应的数据文件中。redo log 是物理日志，记录的是数据库对页的操作，而不是逻辑上的增删改查，具有幂等性。
 使用 redo log，能够确保持久性和原子性，即事务中的所有 sql 被当成一个执行单元。
 redo log 由 2 部分组成：redo log buffer(重做日志缓冲)和 redo log file(重做日志文件)，redo log buffer 存于内存之中，redo log file 永久存储于磁盘。
 事务操作执行：
@@ -88,7 +88,7 @@ redo log 由 2 部分组成：redo log buffer(重做日志缓冲)和 redo log fi
 步骤 1 的速度很快，但是因为内存中的数据是易失的，无法满足持久性的要求，为了满足持久性，需要进行第 2 步，将 redo log buffer 中的日志写入到 redo log file 中，相当于从内存中同步到磁盘上，再执行第 3 步操作将日志记录的操作同步到数据文件中；
 
 ### undo log
-undo log 理解为数据被修改前的备份，如果事务进行了一半，有 1 条 sql 没有执行成功，数据库可以依据 undo log 进行撤销，undo 并不能将数据库物理地恢复到执行语句或者事务之前的样子，它是逻辑日志，当回滚日志被使用时，它只会按照日志逻辑地将数据库中的修改撤销掉，可以理解为，我们在事务中使用的每一条 INSERT 都对应了一条 DELETE，每一条 UPDATE 也都对应一条相反的 UPDATE 语句，MySql 使用 redo log 实现事务的持久性。
+undo log 理解为数据被修改前的备份，如果事务进行了一半，有 1 条 sql 没有执行成功，数据库可以依据 undo log 进行撤销，undo 并不能将数据库物理地恢复到执行语句或者事务之前的样子，它是逻辑日志，当回滚日志被使用时，它只会按照日志逻辑地将数据库中的修改撤销掉，可以理解为，我们在事务中使用的每一条 INSERT 都对应了一条 DELETE，每一条 UPDATE 也都对应一条相反的 UPDATE 语句，MySQL 使用 redo log 实现事务的持久性。
 
 ### log group
 Log  group 为重做日志组，其中有多个重做日志文件（redo log file）,当日志组中的第 1 个 logfile 被写满，会写下一个重做日志文件，当日志组中所有 redo log file 被写满，将 redo log 覆盖写入第一个 redo log file.。

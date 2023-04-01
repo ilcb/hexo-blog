@@ -1,7 +1,7 @@
 ---
 layout: _post
 title: 设计模式-命令模式
-date: 2018-07-10
+date: 2022-11-25
 tags: 
   - 设计模式
   - 行为型

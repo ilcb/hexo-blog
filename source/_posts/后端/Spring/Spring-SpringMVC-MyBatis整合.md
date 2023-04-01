@@ -20,7 +20,7 @@ Spring 是一个轻量级的控制反转（IoC）和面向切面（AOP）的容�
 Spring MVC 属于 SpringFrameWork 的 MVC 组件。Spring MVC 分离了控制器、模型对象、视图等角色。
 
 ### MyBatis
-MyBatis 是一个基于 Java 的持久层框架，提供的持久层框架包括 SQL Maps 和 Data Access Objects（DAO），MyBatis 消除了几乎所有的 JDBC 代码和参数的手工设置以及结果集的检索。MyBatis 使用简单的 XML 或注解用于配置和原始映射，将接口和 Java 的 POJOs（Plain Old Java Objects，普通的 Java 对象）映射成数据库中的记录。
+MyBatis 是一个基于 Java 的持久层框架，提供的持久层框架包括 SQL Maps 和 Data Access Objects（DAO），MyBatis 消除了几乎所有的 JDBC 代码和参数的手工设置以及结果集的检索。MyBatis 使用简单的 XML 或注解用于配置和原始映射，将接口和 Java 的 POJOs（ Old Java Objects，普通的 Java 对象）映射成数据库中的记录。
 
 ## SSM 整合
 ### 配置文件
@@ -620,7 +620,7 @@ public class UserTest {
              <bean class="org.springframework.http.converter.StringHttpMessageConverter">                        
                  <property name="supportedMediaTypes">                                                           
                      <list>                                                                                      
-                         <value>text/plain;charset=UTF-8</value>                                                 
+                         <value>text/;charset=UTF-8</value>                                                 
                      </list>                                                                                     
                  </property>                                                                                     
              </bean>                                                                                             
