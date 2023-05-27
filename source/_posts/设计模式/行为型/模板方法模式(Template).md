@@ -3,7 +3,6 @@ layout: _post
 title: 设计模式-模板方法模式
 date: 2022-11-29
 tags: 
-  - 设计模式
   - 行为型
 categories: 
   - 设计模式

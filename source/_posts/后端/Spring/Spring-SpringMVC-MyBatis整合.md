@@ -4,12 +4,8 @@ title: Spring-SpringMVC-Mybatis 整合
 date: 2017-08-01 
 tags: 
     - Spring
-    - SpringMVC
-    - MyBatis
 categories: 
     - Spring
-    - SpringMVC
-    - MyBatis
 ---
 
 ## 基本概念

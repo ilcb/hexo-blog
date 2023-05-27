@@ -4,9 +4,8 @@ title: Spring AOP 理论
 date: 2017-07-26 17:33:12
 tags: 
     - Spring
-    - AOP
 categories: 
-    - AOP
+    - Spring
 ---
 ## 什么是 AOP
 > AOP(Aspect-OrientedProgramming，面向切面编程)，可以说是 OOP(Object-Oriented rograming，面向对象编程的补充和完善。OOP 引入封装、继承和多态性等概念来建立一种对象层次结构，用以模拟公共行为的一个集合。

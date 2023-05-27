@@ -4,10 +4,8 @@ title: Redis 使用
 date: 2017-07-26 17:33:12
 tags: 
   - Redis
-  - 分布式缓存
 categories: 
-  - 缓存
-  - 工具
+  - Redis
 ---
 ## Redis key 命令
 + del key

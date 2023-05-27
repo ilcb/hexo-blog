@@ -3,7 +3,6 @@ layout: _post
 title: 设计模式-组合模式
 date: 2022-08-30
 tags: 
-  - 设计模式
   - 结构型
 categories: 
   - 设计模式

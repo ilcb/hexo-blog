@@ -3,7 +3,6 @@ layout: _post
 title: 设计模式-状态模式
 date: 2022-12-30
 tags: 
-  - 设计模式
   - 行为型
 categories: 
   - 设计模式

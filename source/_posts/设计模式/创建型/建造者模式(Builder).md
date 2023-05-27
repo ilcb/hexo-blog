@@ -3,7 +3,6 @@ layout: _post
 title: 设计模式-建造者模式
 date: 2022-06-10
 tags: 
-  - 设计模式
   - 创建型
 categories: 
   - 设计模式

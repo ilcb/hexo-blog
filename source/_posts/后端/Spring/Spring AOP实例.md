@@ -4,9 +4,8 @@ title: Spring AOP 实例
 date: 2017-07-26 17:33:12
 tags: 
     - Spring
-    - AOP
 categories: 
-    - AOP
+    - Spring
 ---
 
 ## pom.xml 配置

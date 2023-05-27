@@ -3,7 +3,6 @@ layout: _post
 title: 设计模式-解释器模式
 date: 2022-11-23
 tags: 
-  - 设计模式
   - 行为型
 categories: 
   - 设计模式

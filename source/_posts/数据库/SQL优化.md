@@ -3,7 +3,6 @@ layout: _post
 title: SQL 优化
 date: 2017-07-3110：26
 tags: 
-  - SQL
   - MySQL
 categories: 
   - 数据库

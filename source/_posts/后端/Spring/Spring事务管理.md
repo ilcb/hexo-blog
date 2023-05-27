@@ -3,10 +3,8 @@ title: spring 事务管理
 date: 2019-05-02 19:16:00
 tags: 
   - Spring
-  - 事务
 categories: 
   - Spring
-  - 事务
 ---
 
 ## Spring 事务管理接口

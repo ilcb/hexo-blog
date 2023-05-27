@@ -4,11 +4,8 @@ title: MySQL-事务
 date: 2019-04-30
 tags: 
     - MySQL
-    - 事务
-    - 数据库
 categories: 
     - 数据库
-    - MySQL
 ---
 ## MySQL 中怎么实现事务
 ### MySQL 中事务相关的语句
