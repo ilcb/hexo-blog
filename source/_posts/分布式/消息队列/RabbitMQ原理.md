@@ -4,7 +4,6 @@ title: RabbitMQ 原理
 date: 2018-12-01 
 tags: 
     - RabbitMQ
-    - MQ
 categories: 
     - 消息队列
 ---

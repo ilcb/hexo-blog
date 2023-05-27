@@ -4,7 +4,6 @@ title: Docker 构建 ZooKeeper
 date: 2023-04-01
 tags: 
   - Docker
-  - Redis
 categories: 
   - Docker
 ---

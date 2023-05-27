@@ -1,13 +1,13 @@
 ---
 layout: _post
-title: Docke 构建 PostgrelSQL
+title: Docker 构建 PostgrelSQL
 date: 2023-04-01
 tags: 
   - Docker
 categories: 
   - Docker
 ---
-## Docke 构建 PostgrelSQL
+## Docker 构建 PostgrelSQL
 
 ## 1.查询 postgresql 镜像
 
