@@ -1,4 +1,14 @@
-## Minio安装使用
+---
+layout: _post
+title: Docker 构建 Minio
+date: 2023-04-01
+tags: 
+  - Docker
+categories: 
+  - Docker
+---
+
+## Docker 构建 Minio
 
 ### 简介
 

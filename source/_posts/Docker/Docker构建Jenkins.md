@@ -1,4 +1,14 @@
-## Jenkins安装使用
+---
+layout: _post
+title: Docker 构建 Jenkins
+date: 2023-04-01
+tags: 
+  - Docker
+categories: 
+  - Docker
+---
+
+# Docker 构建 Jenkins
 
 ## 软件环境
 
