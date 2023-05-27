@@ -30,19 +30,21 @@ docker pull bitnami/kafka
 docker run -d \
            --name zookeeper \
            --privileged=true \
+           --restart=always \
            -p 2181:2181 \
-           -v /opt/AppData/zookeeper/data:/data \
-           -v /opt/AppData/zookeeper/conf:/conf \
-           -v /opt/AppData/zookeeper/logs:/datalog \
+           -v /app/zookeeper/data:/data \
+           -v /app/zookeeper/conf:/conf \
+           -v /app/zookeeper/logs:/datalog \
            zookeeper
 ```
 
 4.启动 kafka
 
-```plain
+```bash
 docker run -d \
            --name kafka \
            -p 9092:9092 \
+           --restart=always \
            -e KAFKA_BROKER_ID=0 \
            -e KAFKA_ZOOKEEPER_CONNECT=docker.for.mac.host.internal:2181/kafka \
            -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://docker.for.mac.host.internal:9092 \

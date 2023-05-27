@@ -28,6 +28,7 @@ docker pull rabbitmq
 
 ```bash
 docker run -id --name rabbitmq \
+           --restart=always \
            -p 15672:15672 \
            -p 5672:5672 \
            -e RABBITMQ_DEFAULT_VHOST=/ \

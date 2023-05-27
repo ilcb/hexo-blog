@@ -25,11 +25,12 @@ docker pull postgres
 
 ## 3.启动容器
 
-```plain
+```bash
 docker run --name postgres \
+           --restart=always \
            -e POSTGRES_PASSWORD=123456 \
            -p 5432:5432 \
-           -v /opt/AppData/postgres/data:/var/lib/postgresql/data \
+           -v /app/postgres/data:/var/lib/postgresql/data \
            -d postgres
 ```
 
