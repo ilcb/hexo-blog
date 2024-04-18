@@ -30,7 +30,7 @@ docker pull minio/minio
 #### 挂载数据及配置
 
 ```bash
-mkdir -p /app/minio/{config,data}
+mkdir -p /data/minio/{config,data}
 ```
 
 #### 启动容器
@@ -42,8 +42,8 @@ docker run -p 9000:9000 -p 9090:9090 \
      -d --restart=always \
      -e "MINIO_ACCESS_KEY=minioadmin" \
      -e "MINIO_SECRET_KEY=minioadmin" \
-     -v /app/minio/data:/data \
-     -v /app/minio/config:/root/.minio \
+     -v /data/minio/data:/data \
+     -v /data/minio/config:/root/.minio \
      minio/minio server \
      /data --console-address ":9090" -address ":9000"
 ```

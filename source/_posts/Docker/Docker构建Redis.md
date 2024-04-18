@@ -33,9 +33,9 @@ docker pull redis:latest
 
 本人的配置文件是放在
 
-redis.conf 文件位置： `/app/redis/conf/redis.conf`
+redis.conf 文件位置： `/data/redis/conf/redis.conf`
 
-redis 的 data 文件位置 ： `/app/redis/data`
+redis 的 data 文件位置 ： `/data/redis/data`
 
 ## 3.启动容器
 
@@ -45,8 +45,8 @@ docker run -itd \
            --restart=always \
            --log-opt max-size=100m --log-opt max-file=2 \
            -p 6379:6379 \
-           -v /app/redis/conf/redis.conf:/etc/redis/redis.conf \
-           -v /app/redis/data:/data \
+           -v /data/redis/conf/redis.conf:/etc/redis/redis.conf \
+           -v /data/redis/data:/data \
            -d redis redis-server /etc/redis/redis.conf \
            --appendonly yes
 ```

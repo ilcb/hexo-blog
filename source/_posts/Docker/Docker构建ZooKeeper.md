@@ -30,17 +30,17 @@ docker pull zookeeper
 - 数据挂载目录
 
   ```bash
-  mkdir -p /app/zookeeper/data
+  mkdir -p /data/zookeeper/data
   ```
 - 配置挂载目录
 
   ```bash
-  mkdir -p /app/zookeeper/conf
+  mkdir -p /data/zookeeper/conf
   ```
 - 日志挂载目录
 
   ```bash
-  mkdir -p /app/zookeeper/logs  
+  mkdir -p /data/zookeeper/logs  
   ```
 
 ## 4.启动容器
@@ -51,9 +51,9 @@ docker run -d \
            --privileged=true \
            --restart=always \
            -p 2181:2181 \
-           -v /app/zookeeper/data:/data \
-           -v /app/zookeeper/conf:/conf \
-           -v /app/zookeeper/logs:/datalog \
+           -v /data/zookeeper/data:/data \
+           -v /data/zookeeper/conf:/conf \
+           -v /data/zookeeper/logs:/datalog \
            zookeeper
 ```
 ### 参数解析

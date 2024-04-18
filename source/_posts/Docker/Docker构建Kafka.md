@@ -31,9 +31,9 @@ docker run -d \
            --privileged=true \
            --restart=always \
            -p 2181:2181 \
-           -v /app/zookeeper/data:/data \
-           -v /app/zookeeper/conf:/conf \
-           -v /app/zookeeper/logs:/datalog \
+           -v /data/zookeeper/data:/data \
+           -v /data/zookeeper/conf:/conf \
+           -v /data/zookeeper/logs:/datalog \
            zookeeper
 ```
 

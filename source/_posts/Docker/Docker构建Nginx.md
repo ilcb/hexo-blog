@@ -37,21 +37,21 @@ docker run --name nginx -p 80:80 -d nginx
 
 |                    | 容器中路径            | 宿主机中自定义映射路径 |
 | :----------------- | :-------------------- | :--------------------- |
-| 存储网站网页的目录 | /usr/share/nginx/html | /app/nginx/html   |
-| 日志目录           | /etc/nginx/nginx.conf | /app/nginx/conf/  |
-| nginx配置文件目录  | /var/log/nginx        | /app/nginx/logs   |
-| 证书存放目录       | /etc/nginx/cert/      | /app/nginx/cert   |
-| 子配置项存放处     | /etc/nginx/conf.d     | /app/nginx/       |
+| 存储网站网页的目录 | /usr/share/nginx/html | /data/nginx/html   |
+| 日志目录           | /etc/nginx/nginx.conf | /data/nginx/conf/  |
+| nginx配置文件目录  | /var/log/nginx        | /data/nginx/logs   |
+| 证书存放目录       | /etc/nginx/cert/      | /data/nginx/cert   |
+| 子配置项存放处     | /etc/nginx/conf.d     | /data/nginx/       |
 
 ### 4.2 将容器中的文件copy到宿主机中
 将nginx配置文件copy到宿主机中
 
 ```
-docker cp nginx:/etc/nginx/nginx.conf /app/nginx/conf
-docker cp nginx:/etc/nginx/conf.d /app/nginx/
-docker cp nginx:/usr/share/nginx/html/ /app/nginx/html/
-docker cp nginx:/var/log/nginx/ /app/nginx/logs/
-docker cp nginx:/etc/nginx/cert/ /app/nginx/cert/
+docker cp nginx:/etc/nginx/nginx.conf /data/nginx/conf
+docker cp nginx:/etc/nginx/conf.d /data/nginx/
+docker cp nginx:/usr/share/nginx/html/ /data/nginx/html/
+docker cp nginx:/var/log/nginx/ /data/nginx/logs/
+docker cp nginx:/etc/nginx/cert/ /data/nginx/cert/
 ```
 
 ## 5.停止并移除容器
@@ -69,11 +69,11 @@ docker run -d \
            --restart=always \
            -p 80:80 \
            -p 443:443 \
-           -v /app/nginx/conf/nginx.conf:/etc/nginx/nginx.conf \
-           -v /app/nginx/html/:/usr/share/nginx/html/ \
-           -v /app/nginx/logs/:/var/log/nginx/ \
-           -v /app/nginx/conf.d/:/etc/nginx/conf.d \
-           -v /app/nginx/cert/:/etc/nginx/cert \
+           -v /data/nginx/conf/nginx.conf:/etc/nginx/nginx.conf \
+           -v /data/nginx/html/:/usr/share/nginx/html/ \
+           -v /data/nginx/logs/:/var/log/nginx/ \
+           -v /data/nginx/conf.d/:/etc/nginx/conf.d \
+           -v /data/nginx/cert/:/etc/nginx/cert \
            --privileged=true \
            nginx
            

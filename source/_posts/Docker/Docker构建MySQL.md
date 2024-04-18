@@ -29,15 +29,15 @@ docker pull mysql
 
 - 挂载 mysql 的配置文件 
 ```bash
-sudo mkdir /app/mysql/conf/
+sudo mkdir /data/mysql/conf/
 ```
 - 挂载 mysql 的数据库
 ```bash
-sudo mkdir /app/mysql/data
+sudo mkdir /data/mysql/data
 ```
 - 挂在 mysql 的日志
 ```bash
-sudo mkdir /app/mysql/logs
+sudo mkdir /data/mysql/logs
 ```
 ## 3.启动容器
 
@@ -46,9 +46,9 @@ docker run -d \
            -p 3306:3306 \
            --privileged=true \
            --restart=unless-stopped \
-           -v /app/mysql/logs:/var/log/mysql \
-           -v /app/mysql/data:/var/lib/mysql \
-           -v /app/mysql/conf:/etc/mysql/conf.d \
+           -v /data/mysql/logs:/var/log/mysql \
+           -v /data/mysql/data:/var/lib/mysql \
+           -v /data/mysql/conf:/etc/mysql/conf.d \
            -e MYSQL_ROOT_PASSWORD=root1234 \
            --name mysql mysql
 ```
@@ -62,11 +62,11 @@ docker run -d \
 >
 > --restart=unless-stopped: 容器重启策略
 >
-> -v /app/mysql/logs:/var/log/mysql: 将日志文件夹挂载到宿主机（宿主机路径:容器路径
+> -v /data/mysql/logs:/var/log/mysql: 将日志文件夹挂载到宿主机（宿主机路径:容器路径
 >
-> -v /app/mysql/data:/var/lib/mysql: 将 mysql 储存文件夹挂载到主机（宿主机路径:容器路径）
+> -v /data/mysql/data:/var/lib/mysql: 将 mysql 储存文件夹挂载到主机（宿主机路径:容器路径）
 >
-> -v /app/mysql/conf:/etc/mysql/conf.d 将配置文件夹挂载到主机（宿主机路径:容器路径）
+> -v /data/mysql/conf:/etc/mysql/conf.d 将配置文件夹挂载到主机（宿主机路径:容器路径）
 >
 > -e MYSQL_ROOT_PASSWORD=root1234: 设置 root 用户密码
 >
