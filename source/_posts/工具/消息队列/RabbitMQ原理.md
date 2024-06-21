@@ -3,9 +3,9 @@ layout: _post
 title: RabbitMQ 原理
 date: 2018-12-01 
 tags: 
-    - RabbitMQ
+    - AMQP
 categories: 
-    - 消息队列
+    - 工具
 ---
 RabbitMQ 是一个由 erlang 开发的 AMQP（Advanced Message Queue ）的开源实现
 

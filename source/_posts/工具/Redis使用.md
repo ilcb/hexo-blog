@@ -5,7 +5,7 @@ date: 2017-07-26 17:33:12
 tags: 
   - Redis
 categories: 
-  - Redis
+  - 工具
 ---
 ## Redis key 命令
 + del key
